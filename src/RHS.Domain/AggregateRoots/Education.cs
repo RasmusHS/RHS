@@ -1,0 +1,31 @@
+﻿using RHS.Domain.Common;
+using RHS.Domain.Entities;
+
+namespace RHS.Domain.AggregateRoots;
+
+public class Education : AggregateRoot
+{
+    internal Education()
+    {
+        
+    }
+
+    public Education(DateTime startDate, DateTime? endDate, string institutionName, string degree)
+    {
+        StartDate = startDate;
+        EndDate = endDate;
+        InstitutionName = institutionName;
+        Degree = degree;
+        
+        Created = DateTime.Now;
+        LastModified = DateTime.Now;
+    }
+    
+    public DateTime StartDate { get; private set; }
+    public DateTime? EndDate { get; private set; }
+    public string InstitutionName { get; private set; }
+    public string Degree { get; private set; }
+    
+    // Navigation properties
+    public List<ResumeEdu> Resumes { get; private set; } // many-many
+}
