@@ -7,8 +7,23 @@ namespace RHS.Domain.AggregateRoots;
 
 public class Resume : AggregateRoot
 {
+    // Constructors
     internal Resume() { } // For ORM
 
+    /// <summary>
+    /// Constructor to create Resume without initial WorkExperience
+    /// </summary>
+    /// <param name="introduction"></param>
+    /// <param name="fullName"></param>
+    /// <param name="address"></param>
+    /// <param name="phoneNumber"></param>
+    /// <param name="email"></param>
+    /// <param name="dateOfBirth"></param>
+    /// <param name="gitHubLink"></param>
+    /// <param name="linkedInLink"></param>
+    /// <param name="portfolioLink"></param>
+    /// <param name="interest"></param>
+    /// <param name="photo"></param>
     public Resume(string introduction, FullName fullName, Address address, PhoneNumber phoneNumber, Email email, DateTime dateOfBirth, string gitHubLink, string linkedInLink, string portfolioLink, string interest, byte[] photo)
     {
         Ensure.That(introduction, nameof(introduction)).IsNotNullOrEmpty();
@@ -34,6 +49,53 @@ public class Resume : AggregateRoot
         PortfolioLink = portfolioLink;
         Interest = interest;
         Photo = photo;
+        
+        Created = DateTime.Now;
+        LastModified = DateTime.Now;
+    }
+    
+    /// <summary>
+    /// Constructor to create Resume with initial WorkExperience
+    /// </summary>
+    /// <param name="introduction"></param>
+    /// <param name="fullName"></param>
+    /// <param name="address"></param>
+    /// <param name="phoneNumber"></param>
+    /// <param name="email"></param>
+    /// <param name="dateOfBirth"></param>
+    /// <param name="gitHubLink"></param>
+    /// <param name="linkedInLink"></param>
+    /// <param name="portfolioLink"></param>
+    /// <param name="interest"></param>
+    /// <param name="photo"></param>
+    /// <param name="experience"></param>
+    public Resume(string introduction, FullName fullName, Address address, PhoneNumber phoneNumber, Email email, DateTime dateOfBirth, string gitHubLink, string linkedInLink, string portfolioLink, string interest, byte[] photo, WorkExperience experience)
+    {
+        Ensure.That(introduction, nameof(introduction)).IsNotNullOrEmpty();
+        Ensure.That(fullName, nameof(fullName)).IsNotNull();
+        Ensure.That(address, nameof(address)).IsNotNull();
+        Ensure.That(phoneNumber, nameof(phoneNumber)).IsNotNull();
+        Ensure.That(email, nameof(email)).IsNotNull();
+        Ensure.That(dateOfBirth, nameof(dateOfBirth));
+        Ensure.That(gitHubLink, nameof(gitHubLink)).IsNotNullOrEmpty();
+        Ensure.That(linkedInLink, nameof(linkedInLink)).IsNotNullOrEmpty();
+        Ensure.That(portfolioLink, nameof(portfolioLink)).IsNotNullOrEmpty();
+        Ensure.That(interest, nameof(interest)).IsNotNullOrEmpty();
+        Ensure.That(photo, nameof(photo)).IsNotNull();
+        
+        Introduction = introduction;
+        FullName = fullName;
+        Address = address;
+        PhoneNumber = phoneNumber;
+        Email = email;
+        DateOfBirth = dateOfBirth;
+        GitHubLink = gitHubLink;
+        LinkedInLink = linkedInLink;
+        PortfolioLink = portfolioLink;
+        Interest = interest;
+        Photo = photo;
+        
+        AddWorkExperience(experience);
         
         Created = DateTime.Now;
         LastModified = DateTime.Now;

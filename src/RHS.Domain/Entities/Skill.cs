@@ -4,10 +4,7 @@ namespace RHS.Domain.Entities;
 
 public class Skill : Entity
 {
-    internal Skill()
-    {
-        
-    }
+    internal Skill() { } // For ORM
 
     public Skill(string skillName, string proficiencyLevel)
     {

@@ -1,14 +1,12 @@
-﻿using RHS.Domain.Common;
+﻿using RHS.Domain.AggregateRoots;
+using RHS.Domain.Common;
 using RHS.Domain.ValueObjects;
 
-namespace RHS.Domain.AggregateRoots;
+namespace RHS.Domain.Entities;
 
-public class WorkExperience : AggregateRoot
+public class WorkExperience : Entity
 {
-    internal WorkExperience()
-    {
-        
-    }
+    internal WorkExperience() { } // For ORM
 
     public WorkExperience(int resumeId, string title, string company, Address location, DateTime startDate, DateTime endDate, string description)
     {
@@ -26,7 +24,7 @@ public class WorkExperience : AggregateRoot
     
     public int ResumeId { get; private set; }
     public string Title { get; private set; }
-    public string Company { get; private set; } // Refactor to strong type?
+    public string Company { get; private set; }
     public Address Location { get; private set; } // Refactor to strong type
     public DateTime StartDate { get; private set; }
     public DateTime? EndDate { get; private set; }

@@ -5,10 +5,7 @@ namespace RHS.Domain.Entities;
 
 public class ResumeSkills : JoinEntity
 {
-    internal ResumeSkills()
-    {
-        
-    }
+    internal ResumeSkills() { } // For ORM
 
     public ResumeSkills(int resumeId, int skillId)
     {

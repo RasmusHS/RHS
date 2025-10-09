@@ -4,10 +4,7 @@ namespace RHS.Domain.Entities;
 
 public class Language : Entity
 {
-    internal Language()
-    {
-        
-    }
+    internal Language() { } // For ORM
 
     public Language(/*int languageId,*/ int resumeId, string name, string proficiency)
     {

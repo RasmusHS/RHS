@@ -5,10 +5,7 @@ namespace RHS.Domain.Entities;
 
 public class Project : Entity
 {
-    internal Project()
-    {
-        
-    }
+    internal Project() { } // For ORM
 
     public Project(/*int projectId,*/ int resumeId, string projectTitle, string description, string? projectUrl)
     {

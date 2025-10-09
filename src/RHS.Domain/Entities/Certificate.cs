@@ -4,10 +4,7 @@ namespace RHS.Domain.Entities;
 
 public class Certificate : Entity
 {
-    internal Certificate()
-    {
-        
-    }
+    internal Certificate() { } // For ORM
 
     public Certificate(/*int certId,*/ string certName, string issuingOrganization, DateTime issueDate)
     {
@@ -22,7 +19,7 @@ public class Certificate : Entity
     
     public string CertName { get; private set; }
     public string IssuingOrganization { get; private set; }
-    public DateTime IssueDate { get; private set; }
+    public DateTime IssueDate { get; private set; } // TODO: Move to ResumeCerts and add ExpiryDate there
     
     // Navigation properties
     public List<ResumeCerts> Resumes { get; private set; } // many-many
