@@ -1,4 +1,4 @@
-﻿using RHS.Domain.ValueObjects;
+﻿using RHS.Domain.Common.ValueObjects;
 
 namespace RHS.Domain.Common;
 

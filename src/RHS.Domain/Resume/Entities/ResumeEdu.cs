@@ -1,5 +1,5 @@
-﻿using RHS.Domain.AggregateRoots;
-using RHS.Domain.Common;
+﻿using RHS.Domain.Common;
+using RHS.Domain.Institution;
 
 namespace RHS.Domain.Entities;
 
@@ -21,5 +21,5 @@ public class ResumeEdu : JoinEntity
     
     // navigation properties
     public Resume Resume { get; private set; }
-    public Education Education { get; private set; }
+    public Institution.Institution Institution { get; private set; }
 }

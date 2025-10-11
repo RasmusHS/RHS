@@ -1,7 +1,6 @@
 ﻿using System.Text.RegularExpressions;
-using RHS.Domain.Common;
 
-namespace RHS.Domain.ValueObjects;
+namespace RHS.Domain.Common.ValueObjects;
 
 public class Email : ValueObject
 {

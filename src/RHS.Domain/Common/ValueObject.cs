@@ -4,48 +4,59 @@
 /// ValueObjects cannot have an identity and are immutable. They are reliant on an entity. A ValueObject compared with another ValueObject with the same values are said to be equal
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public abstract class ValueObject
+public abstract class ValueObject : IEquatable<ValueObject>
 {
     protected abstract IEnumerable<object> GetEqualityComponents();
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        if (obj == null)
-            return false;
-
-        if (GetType() != obj.GetType())
+        if (obj is null || obj.GetType() != GetType())
             return false;
 
         var valueObject = (ValueObject)obj;
 
-        return GetEqualityComponents().SequenceEqual(valueObject.GetEqualityComponents());
+        return GetEqualityComponents()
+            .SequenceEqual(valueObject.GetEqualityComponents());
     }
 
     public override int GetHashCode()
     {
         return GetEqualityComponents()
-            .Aggregate(1, (current, obj) =>
-            {
-                unchecked
-                {
-                    return current * 23 + (obj?.GetHashCode() ?? 0);
-                }
-            });
+            .Select(x => x?.GetHashCode() ?? 0)
+            .Aggregate((x, y) => x ^ y);
+
+        // return GetEqualityComponents()
+        //     .Aggregate(1, (current, obj) =>
+        //     {
+        //         unchecked
+        //         {
+        //             return current * 23 + (obj?.GetHashCode() ?? 0);
+        //         }
+        //     });
     }
 
-    public static bool operator ==(ValueObject a, ValueObject b)
+    public static bool operator ==(ValueObject left, ValueObject right)
     {
-        if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
-            return true;
-
-        if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
-            return false;
-
-        return a.Equals(b);
+        return Equals(left, right);
+        
+        // if (ReferenceEquals(left, null) && ReferenceEquals(right, null))
+        //     return true;
+        //
+        // if (ReferenceEquals(left, null) || ReferenceEquals(right, null))
+        //     return false;
+        //
+        // return left.Equals(right);
     }
 
-    public static bool operator !=(ValueObject a, ValueObject b)
+    public static bool operator !=(ValueObject left, ValueObject right)
     {
-        return !(a == b);
+        return !Equals(left, right);
+        
+        //return !(a == b);
+    }
+    
+    public bool Equals(ValueObject? other)
+    {
+        return Equals((object?)other);
     }
 }

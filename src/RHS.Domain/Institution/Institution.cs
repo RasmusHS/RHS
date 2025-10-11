@@ -1,13 +1,14 @@
 ﻿using RHS.Domain.Common;
 using RHS.Domain.Entities;
+using RHS.Domain.Institution.ValueObjects;
 
-namespace RHS.Domain.AggregateRoots;
+namespace RHS.Domain.Institution;
 
-public class Education : AggregateRoot
+public sealed class Institution : AggregateRoot<InstitutionId>
 {
-    internal Education() { } // For ORM
+    internal Institution() { } // For ORM
 
-    public Education(DateTime startDate, DateTime? endDate, string institutionName, string degree)
+    public Institution(DateTime startDate, DateTime? endDate, string institutionName, string degree)
     {
         StartDate = startDate;
         EndDate = endDate;

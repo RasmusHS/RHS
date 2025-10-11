@@ -1,10 +1,10 @@
-﻿using RHS.Domain.AggregateRoots;
-using RHS.Domain.Common;
-using RHS.Domain.ValueObjects;
+﻿using RHS.Domain.Common;
+using RHS.Domain.Common.ValueObjects;
+using RHS.Domain.Resume.ValueObjects;
 
-namespace RHS.Domain.Entities;
+namespace RHS.Domain.Resume.Entities;
 
-public class WorkExperience : Entity
+public sealed class WorkExperience : Entity<WorkExpId>
 {
     internal WorkExperience() { } // For ORM
 

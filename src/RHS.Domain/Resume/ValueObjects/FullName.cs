@@ -1,9 +1,9 @@
 ﻿using EnsureThat;
 using RHS.Domain.Common;
 
-namespace RHS.Domain.ValueObjects;
+namespace RHS.Domain.Resume.ValueObjects;
 
-public class FullName : ValueObjects
+public class FullName : ValueObject
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }

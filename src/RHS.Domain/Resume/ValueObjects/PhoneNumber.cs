@@ -1,7 +1,7 @@
 ﻿using EnsureThat;
 using RHS.Domain.Common;
 
-namespace RHS.Domain.ValueObjects;
+namespace RHS.Domain.Resume.ValueObjects;
 
 public class PhoneNumber : ValueObject
 {

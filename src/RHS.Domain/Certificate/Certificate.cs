@@ -1,6 +1,7 @@
 ﻿using RHS.Domain.Common;
+using RHS.Domain.Entities;
 
-namespace RHS.Domain.Entities;
+namespace RHS.Domain.Certificate;
 
 public class Certificate : Entity
 {

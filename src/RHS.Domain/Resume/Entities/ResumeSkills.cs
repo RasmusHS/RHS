@@ -1,5 +1,4 @@
-﻿using RHS.Domain.AggregateRoots;
-using RHS.Domain.Common;
+﻿using RHS.Domain.Common;
 
 namespace RHS.Domain.Entities;
 
