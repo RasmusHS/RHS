@@ -14,7 +14,6 @@ public sealed class ResumeId : ValueObject
     public static Result<ResumeId> Create()
     {
         return Result.Ok<ResumeId>(new ResumeId(Guid.NewGuid()));
-        //return new(Guid.NewGuid());
     }
     
     protected override IEnumerable<object> GetEqualityComponents()

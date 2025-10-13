@@ -6,10 +6,11 @@ namespace RHS.Domain.Resume.Entities;
 
 public sealed class WorkExperience : Entity<WorkExpId>
 {
-    internal WorkExperience() { } // For ORM
+    //internal WorkExperience() { } // For ORM
 
-    public WorkExperience(int resumeId, string title, string company, Address location, DateTime startDate, DateTime endDate, string description)
+    private WorkExperience(WorkExpId id, ResumeId resumeId, string title, string company, Address location, DateTime startDate, DateTime? endDate, string description) : base(id)
     {
+        Id = id;
         ResumeId = resumeId;
         Title = title;
         Company = company;
@@ -22,7 +23,7 @@ public sealed class WorkExperience : Entity<WorkExpId>
         LastModified = DateTime.Now;
     }
     
-    public int ResumeId { get; private set; }
+    public ResumeId ResumeId { get; private set; }
     public string Title { get; private set; }
     public string Company { get; private set; }
     public Address Location { get; private set; } // Refactor to strong type
