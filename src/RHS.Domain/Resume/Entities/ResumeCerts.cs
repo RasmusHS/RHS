@@ -1,24 +1,32 @@
-﻿using RHS.Domain.Common;
+﻿using RHS.Domain.Certificate;
+using RHS.Domain.Certificate.ValueObjects;
+using RHS.Domain.Common;
+using RHS.Domain.Resume.ValueObjects;
 
-namespace RHS.Domain.Entities;
+namespace RHS.Domain.Resume.Entities;
 
-public class ResumeCerts : JoinEntity
+public sealed class ResumeCerts : JoinEntity<ResumeId, CertId>
 {
-    internal ResumeCerts() { } // For ORM
+    //internal ResumeCerts() { } // For ORM
 
-    public ResumeCerts(int resumeId, int certId)
+    private ResumeCerts(ResumeId resumeId, CertId certId) : base(resumeId, certId)
     {
-        ResumeId = resumeId;
-        CertId = certId;
+        Id1 = resumeId;
+        Id2 = certId;
         
         Created = DateTime.Now;
         LastModified = DateTime.Now;
     }
     
-    public int ResumeId { get; private set; }
-    public int CertId { get; private set; }
+    public static Result<ResumeCerts> Create(ResumeId resumeId, CertId certId)
+    {
+        return Result.Ok<ResumeCerts>(new ResumeCerts(resumeId, certId));
+    }
+    
+    public ResumeId ResumeId { get; private set; }
+    public CertId CertId { get; private set; }
     
     // navigation properties
     public Resume Resume { get; private set; }
-    public Certificate.Certificate Certification { get; private set; }
+    public Cert Cert { get; private set; }
 }

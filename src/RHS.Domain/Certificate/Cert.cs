@@ -1,13 +1,14 @@
 ﻿using RHS.Domain.Common;
 using RHS.Domain.Entities;
+using RHS.Domain.Resume.Entities;
 
 namespace RHS.Domain.Certificate;
 
-public class Certificate : Entity
+public class Cert : Entity
 {
-    internal Certificate() { } // For ORM
+    internal Cert() { } // For ORM
 
-    public Certificate(/*int certId,*/ string certName, string issuingOrganization, DateTime issueDate)
+    public Cert(/*int certId,*/ string certName, string issuingOrganization, DateTime issueDate)
     {
         //Id = certId;
         CertName = certName;

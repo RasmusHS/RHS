@@ -93,29 +93,20 @@ public sealed class Resume : AggregateRoot<ResumeId>
     
     // Aggregate members
     private readonly List<Language> _languages = new();
-    public IReadOnlyList<Language> Languages => _languages.AsReadOnly();
+    public IReadOnlyList<Language> Languages => _languages.AsReadOnly(); // Navigation property
     
     private readonly List<WorkExperience> _workExperiences = new();
-    public IReadOnlyList<WorkExperience> WorkExperiences => _workExperiences.AsReadOnly();
+    public IReadOnlyList<WorkExperience> WorkExperiences => _workExperiences.AsReadOnly(); // Navigation property
     
     private readonly List<Project> _projects = new();
-    public IReadOnlyList<Project> Projects => _projects.AsReadOnly();
+    public IReadOnlyList<Project> Projects => _projects.AsReadOnly(); // Navigation property
     
     private readonly List<ResumeEdu> _education = new();
-    public IReadOnlyList<ResumeEdu> Education => _education.AsReadOnly();
+    public IReadOnlyList<ResumeEdu> Education => _education.AsReadOnly(); // Navigation property
     
     private readonly List<ResumeSkills> _skills = new();
-    public IReadOnlyList<ResumeSkills> Skills => _skills.AsReadOnly();
+    public IReadOnlyList<ResumeSkills> Skills => _skills.AsReadOnly(); // Navigation property
     
     private readonly List<ResumeCerts> _certs = new();
-    public IReadOnlyList<ResumeCerts> Certs => _certs.AsReadOnly();
-    
-    // Navigation properties
-    //public List<WorkExperience> WorkExperience { get; private set; } // 1-many
-    //public List<Project> Projects { get; private set; } // 1-many
-    //public List<Language> Languages { get; private set; } // 1-many
-    
-    //public List<ResumeEdu> Education { get; private set; } // many-many
-    //public List<ResumeSkills> Skills { get; private set; } // many-many
-    //public List<ResumeCerts> Certs { get; private set; } // many-many
+    public IReadOnlyList<ResumeCerts> Certs => _certs.AsReadOnly(); // Navigation property
 }
