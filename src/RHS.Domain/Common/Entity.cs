@@ -7,6 +7,8 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
     public DateTime Created { get; protected set; }
     public DateTime LastModified { get; protected set; }
 
+    protected Entity() { } // For ORM
+    
     protected Entity(TId id)
     {
         Id = id;

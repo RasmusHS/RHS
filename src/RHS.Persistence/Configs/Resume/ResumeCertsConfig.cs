@@ -4,7 +4,7 @@ using RHS.Domain.Certificate.ValueObjects;
 using RHS.Domain.Resume.Entities;
 using RHS.Domain.Resume.ValueObjects;
 
-namespace RHS.Persistence.Configs;
+namespace RHS.Persistence.Configs.Resume;
 
 public class ResumeCertsConfig : IEntityTypeConfiguration<ResumeCerts>
 {

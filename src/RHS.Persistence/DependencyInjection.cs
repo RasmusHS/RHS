@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RHS.Application.Data;
 
 namespace RHS.Persistence;
 
@@ -10,9 +11,13 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddDbContext<>(options =>
-            options.UseMySql(configuration.GetConnectionString("Live"))
+        services.AddDbContext<ApplicationDbContext>(options =>
+            options
+                .UseMySql(serverVersion: ServerVersion.AutoDetect(configuration.GetConnectionString("Live")), connectionString: configuration.GetConnectionString("Live"))
                 .UseSnakeCaseNamingConvention());
+        
+        services.AddScoped<IApplicationDbContext>(provider =>
+            provider.GetRequiredService<ApplicationDbContext>());
         
         return services;
     }

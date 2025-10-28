@@ -1,24 +1,39 @@
-﻿using RHS.Domain.Common;
+﻿using EnsureThat;
+using RHS.Domain.Common;
+using RHS.Domain.Resume.ValueObjects;
+using RHS.Domain.Skill.ValueObjects;
+using RHS.Domain.Skill;
 
-namespace RHS.Domain.Entities;
+namespace RHS.Domain.Resume.Entities;
 
-public class ResumeSkills : JoinEntity
+public sealed class ResumeSkills : JoinEntity<ResumeId, SkillId>
 {
     internal ResumeSkills() { } // For ORM
 
-    public ResumeSkills(int resumeId, int skillId)
+    private ResumeSkills(ResumeId resumeId, SkillId skillId, string proficiencyLevel) : base(resumeId, skillId)
     {
-        ResumeId = resumeId;
-        SkillId = skillId;
+        Id1 = resumeId;
+        Id2 = skillId;
+        ProficiencyLevel = proficiencyLevel;
         
         Created = DateTime.Now;
         LastModified = DateTime.Now;
     }
     
-    public int ResumeId { get; private set; }
-    public int SkillId { get; private set; }
+    public static Result<ResumeSkills> Create(ResumeId resumeId, SkillId skillId, string proficiencyLevel)
+    {
+        Ensure.That(resumeId, nameof(resumeId)).IsNotNull();
+        Ensure.That(skillId, nameof(skillId)).IsNotNull();
+        Ensure.That(proficiencyLevel, nameof(proficiencyLevel)).IsNotNullOrEmpty();
+        
+        return Result.Ok<ResumeSkills>(new ResumeSkills(resumeId, skillId, proficiencyLevel));
+    }
+    
+    public ResumeId ResumeId { get; private set; }
+    public SkillId SkillId { get; private set; }
+    public string ProficiencyLevel { get; private set; }
     
     // navigation properties
     public Resume Resume { get; private set; }
-    public Skill Skill { get; private set; }
+    public SkillSet Skill { get; private set; }
 }

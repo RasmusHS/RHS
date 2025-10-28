@@ -8,7 +8,8 @@ public abstract class JoinEntity<TId1, TId2> : IEquatable<JoinEntity<TId1, TId2>
     public TId2 Id2 { get; protected set; }
     public DateTime Created { get; protected set; }
     public DateTime LastModified { get; protected set; }
-    
+
+    protected JoinEntity() { } // For ORM
     protected JoinEntity(TId1 id1, TId2 id2)
     {
         Id1 = id1;

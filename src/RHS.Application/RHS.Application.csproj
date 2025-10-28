@@ -29,11 +29,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="CQRS\DTO\" />
       <Folder Include="CQRS\Education\" />
       <Folder Include="CQRS\Resume\" />
       <Folder Include="CQRS\WorkExperience\" />
-      <Folder Include="Data\" />
     </ItemGroup>
 
 </Project>

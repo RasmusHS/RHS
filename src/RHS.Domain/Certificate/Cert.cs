@@ -1,28 +1,36 @@
-﻿using RHS.Domain.Common;
-using RHS.Domain.Entities;
+﻿using EnsureThat;
+using RHS.Domain.Certificate.ValueObjects;
+using RHS.Domain.Common;
 using RHS.Domain.Resume.Entities;
 
 namespace RHS.Domain.Certificate;
 
-public class Cert : Entity
+public sealed class Cert : AggregateRoot<CertId>
 {
     internal Cert() { } // For ORM
 
-    public Cert(/*int certId,*/ string certName, string issuingOrganization, DateTime issueDate)
+    private Cert(CertId id, string certName, string issuingOrganization) : base(id)
     {
-        //Id = certId;
+        Id = id;
         CertName = certName;
         IssuingOrganization = issuingOrganization;
-        IssueDate = issueDate;
         
         Created = DateTime.Now;
         LastModified = DateTime.Now;
     }
     
+    public static Result<Cert> Create(string certName, string issuingOrganization)
+    {
+        Ensure.That(certName, nameof(certName)).IsNotNullOrEmpty();
+        Ensure.That(issuingOrganization, nameof(issuingOrganization)).IsNotNullOrEmpty();
+        
+        return Result.Ok<Cert>(new Cert(CertId.Create(), certName, issuingOrganization));
+    }
+    
     public string CertName { get; private set; }
     public string IssuingOrganization { get; private set; }
-    public DateTime IssueDate { get; private set; } // TODO: Move to ResumeCerts and add ExpiryDate there
     
     // Navigation properties
-    public List<ResumeCerts> Resumes { get; private set; } // many-many
+    private readonly List<ResumeCerts> _resumes = new();
+    public IReadOnlyList<ResumeCerts> Resumes => _resumes.AsReadOnly(); // Navigation property
 }
