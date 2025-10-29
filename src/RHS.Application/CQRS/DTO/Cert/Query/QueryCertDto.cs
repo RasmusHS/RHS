@@ -2,7 +2,7 @@
 
 namespace RHS.Application.CQRS.DTO.Cert.Query;
 
-public class QueryCertDto : DtoBase
+public record QueryCertDto : DtoBase
 {
     public QueryCertDto(CertId id, string certName, string issuingOrganization, DateTime created, DateTime lastModified)
     {

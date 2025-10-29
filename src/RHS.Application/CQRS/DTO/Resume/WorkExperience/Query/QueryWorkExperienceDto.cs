@@ -3,7 +3,7 @@ using RHS.Domain.Resume.ValueObjects;
 
 namespace RHS.Application.CQRS.DTO.Resume.WorkExperience.Query;
 
-public class QueryWorkExperienceDto : DtoBase
+public record QueryWorkExperienceDto : DtoBase
 {
     public QueryWorkExperienceDto(WorkExpId id, ResumeId resumeId, string title, string company, Address location, DateTime startDate, DateTime? endDate, string description, DateTime created, DateTime lastModified)
     {

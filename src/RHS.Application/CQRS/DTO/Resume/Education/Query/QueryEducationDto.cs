@@ -3,7 +3,7 @@ using RHS.Domain.Resume.ValueObjects;
 
 namespace RHS.Application.CQRS.DTO.Resume.Education.Query;
 
-public class QueryEducationDto : DtoBase
+public record QueryEducationDto : DtoBase
 {
     public QueryEducationDto(ResumeId resumeId, Degree degree, DateTime startDate, DateTime? endDate, DateTime created, DateTime lastModified)
     {

@@ -2,7 +2,7 @@
 
 namespace RHS.Application.CQRS.DTO.Resume.Language.Query;
 
-public class QueryLanguageDto : DtoBase
+public record QueryLanguageDto : DtoBase
 {
     public QueryLanguageDto(LanguageId id, ResumeId resumeId, string name, string proficiency, DateTime created, DateTime lastModified)
     {

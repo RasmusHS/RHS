@@ -2,7 +2,7 @@
 
 namespace RHS.Application.CQRS.DTO.Skill.Query;
 
-public class QuerySkillDto : DtoBase
+public record QuerySkillDto : DtoBase
 {
     public QuerySkillDto(SkillId id, string skillName, string type, DateTime created, DateTime lastModified)
     {

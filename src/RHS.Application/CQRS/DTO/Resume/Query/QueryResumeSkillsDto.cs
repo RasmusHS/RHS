@@ -3,7 +3,7 @@ using RHS.Domain.Skill.ValueObjects;
 
 namespace RHS.Application.CQRS.DTO.Resume.Query;
 
-public class QueryResumeSkillsDto : DtoBase
+public record QueryResumeSkillsDto : DtoBase
 {
     public QueryResumeSkillsDto(ResumeId resumeId, SkillId skillId, string proficiencyLevel, DateTime created, DateTime lastModified)
     {

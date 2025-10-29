@@ -3,7 +3,7 @@ using RHS.Domain.Institution.ValueObjects;
 
 namespace RHS.Application.CQRS.DTO.Institution.Query;
 
-public class QueryInstitutionDto : DtoBase
+public record QueryInstitutionDto : DtoBase
 {
     public QueryInstitutionDto(InstitutionId id, string institutionName, Address location, DateTime created, DateTime lastModified)
     {

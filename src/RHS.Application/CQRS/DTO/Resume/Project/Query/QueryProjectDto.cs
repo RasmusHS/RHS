@@ -2,7 +2,7 @@
 
 namespace RHS.Application.CQRS.DTO.Resume.Project.Query;
 
-public class QueryProjectDto : DtoBase
+public record QueryProjectDto : DtoBase
 {
     public QueryProjectDto(ProjectId id, ResumeId resumeId, string projectTitle, string description, string? projectUrl, DateTime created, DateTime lastModified)
     {

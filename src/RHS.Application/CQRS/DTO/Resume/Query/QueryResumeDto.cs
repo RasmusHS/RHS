@@ -8,9 +8,9 @@ using RHS.Domain.Resume.ValueObjects;
 
 namespace RHS.Application.CQRS.DTO.Resume.Query;
 
-public class QueryResumeDto : DtoBase
+public record QueryResumeDto : DtoBase
 {
-    public QueryResumeDto(ResumeId id,string introduction, FullName fullName, Address address, PhoneNumber phoneNumber, 
+    public QueryResumeDto(ResumeId id, string introduction, FullName fullName, Address address, PhoneNumber phoneNumber, 
         Email email, DateTime dateOfBirth, string gitHubLink, string linkedInLink, string? portfolioLink, 
         string interest, byte[] photo, List<QueryLanguageDto> languages, List<QueryWorkExperienceDto> workExperiences, List<QueryProjectDto> projects, 
         List<QueryEducationDto> education, List<QueryResumeSkillsDto> skills, List<QueryResumeCertsDto> certs, DateTime created, DateTime lastModified)
