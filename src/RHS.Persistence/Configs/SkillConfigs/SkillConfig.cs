@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using RHS.Domain.Skill;
 using RHS.Domain.Skill.ValueObjects;
 
-namespace RHS.Persistence.Configs;
+namespace RHS.Persistence.Configs.SkillConfigs;
 
 public class SkillConfig : IEntityTypeConfiguration<SkillSet>
 {
@@ -17,5 +17,9 @@ public class SkillConfig : IEntityTypeConfiguration<SkillSet>
         builder.HasMany(s => s.Resumes)
             .WithOne(rs => rs.Skill)
             .HasForeignKey(rs => rs.SkillId);
+        
+        builder.HasMany(s => s.SubSkills)
+            .WithOne(ss => ss.ParentSkill)
+            .HasForeignKey(ss => ss.ParentSkillId);
     }
 }

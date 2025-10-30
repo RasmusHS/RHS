@@ -5,12 +5,12 @@ namespace RHS.Application.CQRS.DTO.Resume.Query;
 
 public record QueryResumeSkillsDto : DtoBase
 {
-    public QueryResumeSkillsDto(ResumeId resumeId, SkillId skillId, string proficiencyLevel, DateTime created, DateTime lastModified)
+    public QueryResumeSkillsDto(ResumeId resumeId, SkillId skillId, int displayOrder, DateTime created, DateTime lastModified)
     {
         ResumeId = resumeId;
         SkillId = skillId;
         
-        ProficiencyLevel = proficiencyLevel;
+        DisplayOrder = displayOrder;
         
         Created = created;
         LastModified = lastModified;
@@ -20,5 +20,5 @@ public record QueryResumeSkillsDto : DtoBase
     
     public ResumeId ResumeId { get; set; }
     public SkillId SkillId { get; set; }
-    public string ProficiencyLevel { get; set; }
+    public int DisplayOrder { get; set; }
 }

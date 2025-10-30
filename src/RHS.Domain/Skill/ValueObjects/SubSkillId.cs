@@ -2,18 +2,18 @@
 
 namespace RHS.Domain.Skill.ValueObjects;
 
-public sealed class SkillId : ValueObject
+public sealed class SubSkillId : ValueObject
 {
     public Guid Value { get; }
-
-    private SkillId(Guid value)
+    
+    private SubSkillId(Guid value)
     {
         Value = value;
     }
-
-    public static Result<SkillId> Create()
+    
+    public static Result<SubSkillId> Create()
     {
-        return Result.Ok<SkillId>(new SkillId(Guid.NewGuid()));
+        return Result.Ok<SubSkillId>(new SubSkillId(Guid.NewGuid()));
     }
     
     protected override IEnumerable<object> GetEqualityComponents()

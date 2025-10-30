@@ -31,10 +31,6 @@
     <ItemGroup>
       <Folder Include="CQRS\DTO\Cert\Command\" />
       <Folder Include="CQRS\DTO\Institution\Command\" />
-      <Folder Include="CQRS\DTO\Resume\Education\Command\" />
-      <Folder Include="CQRS\DTO\Resume\Language\Command\" />
-      <Folder Include="CQRS\DTO\Resume\Project\Command\" />
-      <Folder Include="CQRS\DTO\Resume\WorkExperience\Command\" />
       <Folder Include="CQRS\DTO\Skill\Command\" />
       <Folder Include="CQRS\Education\" />
       <Folder Include="CQRS\Resume\" />

@@ -1,6 +1,7 @@
 ﻿using EnsureThat;
 using RHS.Domain.Common;
 using RHS.Domain.Resume.Entities;
+using RHS.Domain.Skill.Entities;
 using RHS.Domain.Skill.ValueObjects;
 
 namespace RHS.Domain.Skill;
@@ -33,4 +34,7 @@ public sealed class SkillSet : AggregateRoot<SkillId>
     // Navigation properties
     private readonly List<ResumeSkills> _resumes = new();
     public IReadOnlyList<ResumeSkills> Resumes => _resumes.AsReadOnly(); // many-many
+    
+    private readonly List<SubSkill> _subSkills = new();
+    public IReadOnlyList<SubSkill> SubSkills => _subSkills.AsReadOnly(); // one-many
 }

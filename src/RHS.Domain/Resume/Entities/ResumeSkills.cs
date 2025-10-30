@@ -10,28 +10,28 @@ public sealed class ResumeSkills : JoinEntity<ResumeId, SkillId>
 {
     internal ResumeSkills() { } // For ORM
 
-    private ResumeSkills(ResumeId resumeId, SkillId skillId, string proficiencyLevel) : base(resumeId, skillId)
+    private ResumeSkills(ResumeId resumeId, SkillId skillId, int displayOrder) : base(resumeId, skillId)
     {
         Id1 = resumeId;
         Id2 = skillId;
-        ProficiencyLevel = proficiencyLevel;
+        DisplayOrder = displayOrder;
         
         Created = DateTime.Now;
         LastModified = DateTime.Now;
     }
     
-    public static Result<ResumeSkills> Create(ResumeId resumeId, SkillId skillId, string proficiencyLevel)
+    public static Result<ResumeSkills> Create(ResumeId resumeId, SkillId skillId, int displayOrder)
     {
         Ensure.That(resumeId, nameof(resumeId)).IsNotNull();
         Ensure.That(skillId, nameof(skillId)).IsNotNull();
-        Ensure.That(proficiencyLevel, nameof(proficiencyLevel)).IsNotNullOrEmpty();
+        Ensure.That(displayOrder, nameof(displayOrder));
         
-        return Result.Ok<ResumeSkills>(new ResumeSkills(resumeId, skillId, proficiencyLevel));
+        return Result.Ok<ResumeSkills>(new ResumeSkills(resumeId, skillId, displayOrder));
     }
     
     public ResumeId ResumeId { get; private set; }
     public SkillId SkillId { get; private set; }
-    public string ProficiencyLevel { get; private set; }
+    public int DisplayOrder { get; private set; }
     
     // navigation properties
     public Resume Resume { get; private set; }

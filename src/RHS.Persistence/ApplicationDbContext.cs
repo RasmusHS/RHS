@@ -5,6 +5,7 @@ using RHS.Domain.Institution;
 using RHS.Domain.Resume;
 using RHS.Domain.Resume.Entities;
 using RHS.Domain.Skill;
+using RHS.Domain.Skill.Entities;
 
 namespace RHS.Persistence;
 
@@ -23,6 +24,7 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<ResumeCerts> ResumeCerts { get; set; }
     public DbSet<InstitutionEntity> Institutions { get; set; }
     public DbSet<SkillSet> Skills { get; set; }
+    public DbSet<SubSkill> SubSkills { get; set; }
     public DbSet<Cert> Certs { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
