@@ -31,20 +31,19 @@ public class CreateResumeCommandHandler : ICommandHandler<CreateResumeCommand>
         Result<Email> emailResult = Email.Create(command.Email);
         if (emailResult.Failure) return emailResult;
         
-        Result<ResumeEntity> resumeResult = ResumeEntity.Create(
-            command.Introduction,
-            fullNameResult.Value,
-            addressResult.Value,
-            emailResult.Value,
-            command.GitHubLink,
-            command.LinkedInLink,
-            command.Photo
-        );
-        if (resumeResult.Failure) return resumeResult;
-        var resume = await _resumeRepository.AddAsync(resumeResult.Value, cancellationToken);
-        
-        if (command.Projects != null)
+        if (command.Projects.Any())
         {
+            Result<ResumeEntity> resumeResult = ResumeEntity.Create(
+                command.Introduction,
+                fullNameResult.Value,
+                addressResult.Value,
+                emailResult.Value,
+                command.GitHubLink,
+                command.LinkedInLink,
+                command.Photo
+            );
+            if (resumeResult.Failure) return resumeResult;
+            
             List<ProjectEntity> projects = new List<ProjectEntity>();
             foreach (var project in command.Projects)
             {
@@ -60,13 +59,22 @@ public class CreateResumeCommandHandler : ICommandHandler<CreateResumeCommand>
                 
                 projects.Add(projectResult.Value);
             }
-            //await _projectRepository.AddRangeAsync(projects);
-            resume.AddRangeProjects(projects);
-
-            _resumeRepository.Save(cancellationToken);
-            //_projectRepository.Save(cancellationToken);
-
-            return Result.Ok();
+            resumeResult.Value.AddRangeProjects(projects);
+            await _resumeRepository.AddAsync(resumeResult.Value, cancellationToken);
+        }
+        else
+        {
+            Result<ResumeEntity> resumeResult = ResumeEntity.Create(
+                command.Introduction,
+                fullNameResult.Value,
+                addressResult.Value,
+                emailResult.Value,
+                command.GitHubLink,
+                command.LinkedInLink,
+                command.Photo
+            );
+            if (resumeResult.Failure) return resumeResult;
+            await _resumeRepository.AddAsync(resumeResult.Value, cancellationToken);
         }
         
         _resumeRepository.Save(cancellationToken);

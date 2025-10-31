@@ -23,15 +23,15 @@ public class ResumeRepository : IResumeRepository
     {
         _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
 
-        // if (entity.Projects.Any())
-        // {
-        //     _dbContext.Resumes.AddAsync(entity, cancellationToken);
-        //     _dbContext.Projects.AddRangeAsync(entity.Projects, cancellationToken);
-        //     
-        //     _dbContext.Database.CommitTransactionAsync(cancellationToken);
-        //     
-        //     return Task.FromResult((ResumeEntity)entity);
-        // }
+        if (entity.Projects.Any())
+        {
+            _dbContext.Resumes.AddAsync(entity, cancellationToken);
+            _dbContext.Projects.AddRangeAsync(entity.Projects, cancellationToken);
+            
+            _dbContext.Database.CommitTransactionAsync(cancellationToken);
+            
+            return Task.FromResult((ResumeEntity)entity);
+        }
         
         _dbContext.Resumes.AddAsync(entity, cancellationToken);
         
@@ -45,6 +45,7 @@ public class ResumeRepository : IResumeRepository
         throw new NotImplementedException();
     }
     
+    // TODO: Consider scrapping this method and using ProjectRepository directly
     public Task<IEnumerable<ProjectEntity>> AddRangeProjectsAsync(List<ProjectEntity> entities, CancellationToken cancellationToken = default)
     {
         _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
