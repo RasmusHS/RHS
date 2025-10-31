@@ -12,5 +12,7 @@ public static class DependencyInjection
         //services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         services.AddScoped<IDispatcher>(d => new Dispatcher(d.GetService<IMediator>()));
+        
+        return services;
     }
 }

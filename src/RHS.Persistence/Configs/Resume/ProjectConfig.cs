@@ -5,16 +5,16 @@ using RHS.Domain.Resume.ValueObjects;
 
 namespace RHS.Persistence.Configs.Resume;
 
-public class ProjectConfig : IEntityTypeConfiguration<Project>
+public class ProjectConfig : IEntityTypeConfiguration<ProjectEntity>
 {
-    public void Configure(EntityTypeBuilder<Project> builder)
+    public void Configure(EntityTypeBuilder<ProjectEntity> builder)
     {
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id).HasConversion(
             id => id.Value,
             value => ProjectId.Create().Value!);
         
-        builder.HasOne(p => p.Resume)
+        builder.HasOne(p => p.ResumeEntity)
             .WithMany(r => r.Projects)
             .HasForeignKey(p => p.ResumeId);
     }

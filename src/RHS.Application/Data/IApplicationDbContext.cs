@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using RHS.Domain.Common;
+using RHS.Domain.Resume;
+using RHS.Domain.Resume.Entities;
 
 namespace RHS.Application.Data;
 
@@ -6,5 +10,8 @@ public interface IApplicationDbContext
 {
     DatabaseFacade Database { get; }
     
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    public DbSet<ResumeEntity> Resumes { get; set; }
+    public DbSet<ProjectEntity> Projects { get; set; }
+    
+    void SaveChanges(CancellationToken cancellationToken = default);
 }

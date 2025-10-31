@@ -1,0 +1,75 @@
+﻿using RHS.Application.CQRS.Resume.Project.Command;
+using RHS.Application.Data;
+using RHS.Application.Data.Infrastructure;
+using RHS.Domain.Common;
+using RHS.Domain.Common.ValueObjects;
+using RHS.Domain.Resume;
+using RHS.Domain.Resume.Entities;
+using RHS.Domain.Resume.ValueObjects;
+
+namespace RHS.Application.CQRS.Resume.Command.Handlers;
+
+public class CreateResumeCommandHandler : ICommandHandler<CreateResumeCommand>
+{
+    private readonly IResumeRepository _resumeRepository;
+    private readonly IProjectRepository _projectRepository;
+    
+    public CreateResumeCommandHandler(IResumeRepository resumeRepository, IProjectRepository projectRepository)
+    {
+        _resumeRepository = resumeRepository;
+        _projectRepository = projectRepository;
+    }
+    
+    public async Task<Result> Handle(CreateResumeCommand command, CancellationToken cancellationToken = default)
+    {
+        Result<FullName> fullNameResult = FullName.Create(command.FirstName, command.LastName);
+        if (fullNameResult.Failure) return fullNameResult;
+        
+        Result<Address> addressResult = Address.Create(command.Street, command.ZipCode, command.City);
+        if (addressResult.Failure) return addressResult;
+        
+        Result<Email> emailResult = Email.Create(command.Email);
+        if (emailResult.Failure) return emailResult;
+        
+        Result<ResumeEntity> resumeResult = ResumeEntity.Create(
+            command.Introduction,
+            fullNameResult.Value,
+            addressResult.Value,
+            emailResult.Value,
+            command.GitHubLink,
+            command.LinkedInLink,
+            command.Photo
+        );
+        if (resumeResult.Failure) return resumeResult;
+        var resume = await _resumeRepository.AddAsync(resumeResult.Value, cancellationToken);
+        
+        if (command.Projects != null)
+        {
+            List<ProjectEntity> projects = new List<ProjectEntity>();
+            foreach (var project in command.Projects)
+            {
+                Result<ProjectEntity> projectResult = ProjectEntity.Create( 
+                    project.ResumeId = resumeResult.Value.Id,
+                    project.ProjectTitle,
+                    project.Description,
+                    project.ProjectUrl,
+                    project.DemoGif,
+                    project.IsFeatured
+                );
+                if (projectResult.Failure) return projectResult;
+                
+                projects.Add(projectResult.Value);
+            }
+            //await _projectRepository.AddRangeAsync(projects);
+            resume.AddRangeProjects(projects);
+
+            _resumeRepository.Save(cancellationToken);
+            //_projectRepository.Save(cancellationToken);
+
+            return Result.Ok();
+        }
+        
+        _resumeRepository.Save(cancellationToken);
+        return Result.Ok();
+    }
+}

@@ -28,13 +28,4 @@
       <ProjectReference Include="..\RHS.Domain\RHS.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="CQRS\DTO\Cert\Command\" />
-      <Folder Include="CQRS\DTO\Institution\Command\" />
-      <Folder Include="CQRS\DTO\Skill\Command\" />
-      <Folder Include="CQRS\Education\" />
-      <Folder Include="CQRS\Resume\" />
-      <Folder Include="CQRS\WorkExperience\" />
-    </ItemGroup>
-
 </Project>
