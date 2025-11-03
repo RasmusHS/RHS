@@ -14,7 +14,6 @@ public sealed class ProjectId : ValueObject
     public static Result<ProjectId> Create()
     {
         return Result.Ok<ProjectId>(new ProjectId(Guid.NewGuid()));
-        //return new(Guid.NewGuid());
     }
     
     protected override IEnumerable<object> GetEqualityComponents()

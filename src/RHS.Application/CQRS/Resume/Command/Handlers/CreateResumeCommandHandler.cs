@@ -12,12 +12,11 @@ namespace RHS.Application.CQRS.Resume.Command.Handlers;
 public class CreateResumeCommandHandler : ICommandHandler<CreateResumeCommand>
 {
     private readonly IResumeRepository _resumeRepository;
-    private readonly IProjectRepository _projectRepository;
     
-    public CreateResumeCommandHandler(IResumeRepository resumeRepository, IProjectRepository projectRepository)
+    
+    public CreateResumeCommandHandler(IResumeRepository resumeRepository)
     {
         _resumeRepository = resumeRepository;
-        _projectRepository = projectRepository;
     }
     
     public async Task<Result> Handle(CreateResumeCommand command, CancellationToken cancellationToken = default)

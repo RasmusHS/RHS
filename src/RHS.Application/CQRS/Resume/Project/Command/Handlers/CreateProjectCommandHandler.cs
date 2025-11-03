@@ -1,6 +1,7 @@
 ﻿using RHS.Application.Data;
 using RHS.Application.Data.Infrastructure;
 using RHS.Domain.Common;
+using RHS.Domain.Resume.Entities;
 
 namespace RHS.Application.CQRS.Resume.Project.Command.Handlers;
 
@@ -13,8 +14,20 @@ public class CreateProjectCommandHandler : ICommandHandler<CreateProjectCommand>
         _projectRepository = projectRepository;
     }
     
-    public Task<Result> Handle(CreateProjectCommand command, CancellationToken cancellationToken = default)
+    public async Task<Result> Handle(CreateProjectCommand command, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        Result<ProjectEntity> projectResult = ProjectEntity.Create(
+            command.ResumeId,
+            command.ProjectTitle,
+            command.Description,
+            command.ProjectUrl,
+            command.DemoGif,
+            command.IsFeatured
+        );
+        if (projectResult.Failure) return projectResult;
+        
+        await _projectRepository.AddAsync(projectResult.Value, cancellationToken);
+        
+        return Result.Ok();
     }
 }

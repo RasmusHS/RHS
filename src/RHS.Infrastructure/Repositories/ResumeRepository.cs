@@ -1,12 +1,9 @@
-﻿//using System.Transactions;
-
+﻿using System.Collections.Immutable;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using RHS.Application.Data;
 using RHS.Application.Data.Infrastructure;
-using RHS.Domain.Common;
 using RHS.Domain.Resume;
-using RHS.Domain.Resume.Entities;
 
 namespace RHS.Infrastructure.Repositories;
 
@@ -19,61 +16,68 @@ public class ResumeRepository : IResumeRepository
         _dbContext = dbContext;
     }
 
-    public Task<ResumeEntity> AddAsync(ResumeEntity entity, CancellationToken cancellationToken = default)
+    public async Task<ResumeEntity> AddAsync(ResumeEntity entity, CancellationToken cancellationToken = default)
     {
-        _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
+        await _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
 
         if (entity.Projects.Any())
         {
-            _dbContext.Resumes.AddAsync(entity, cancellationToken);
-            _dbContext.Projects.AddRangeAsync(entity.Projects, cancellationToken);
+            await _dbContext.Resumes.AddAsync(entity, cancellationToken);
+            await _dbContext.Projects.AddRangeAsync(entity.Projects, cancellationToken);
             
-            _dbContext.Database.CommitTransactionAsync(cancellationToken);
+            await _dbContext.Database.CommitTransactionAsync(cancellationToken);
             
-            return Task.FromResult((ResumeEntity)entity);
+            return await Task.FromResult((ResumeEntity)entity);
         }
         
-        _dbContext.Resumes.AddAsync(entity, cancellationToken);
+        await _dbContext.Resumes.AddAsync(entity, cancellationToken);
         
-        _dbContext.Database.CommitTransactionAsync(cancellationToken);
+        await _dbContext.Database.CommitTransactionAsync(cancellationToken);
         
-        return Task.FromResult((ResumeEntity)entity);
+        return await Task.FromResult((ResumeEntity)entity);
     }
 
-    public Task<IEnumerable<ResumeEntity>> AddRangeAsync(List<ResumeEntity> entities, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<ResumeEntity>> AddRangeAsync(List<ResumeEntity> entities, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
-    }
-    
-    // TODO: Consider scrapping this method and using ProjectRepository directly
-    public Task<IEnumerable<ProjectEntity>> AddRangeProjectsAsync(List<ProjectEntity> entities, CancellationToken cancellationToken = default)
-    {
-        _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
+        await _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
+        await _dbContext.Resumes.AddRangeAsync(entities, cancellationToken);
+        await _dbContext.Database.CommitTransactionAsync(cancellationToken);
         
-        _dbContext.Projects.AddRangeAsync(entities, cancellationToken);
-        _dbContext.Database.CommitTransactionAsync(cancellationToken);
+        return await Task.FromResult((IEnumerable<ResumeEntity>)entities);
+    }
+    
+    public async Task<ResumeEntity> GetByIdAsync(object id)
+    {
+        await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
+        var result = await _dbContext.Resumes.FindAsync(id) ?? throw new KeyNotFoundException($"Resume with ID {id} not found.");
+        await _dbContext.Database.CommitTransactionAsync();
         
-        return Task.FromResult((IEnumerable<ProjectEntity>)entities);
+        return result;
     }
     
-    public Task<Result<ResumeEntity>> GetByIdAsync(object id)
+    public async Task<IReadOnlyList<ResumeEntity>> GetAllAsync()
     {
-        throw new NotImplementedException();
-    }
-    
-    public Task<IReadOnlyList<ResumeEntity>> GetAllAsync()
-    {
-        throw new NotImplementedException();
+        await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
+        var result = await _dbContext.Resumes.AsNoTracking().ToListAsync();
+        await _dbContext.Database.CommitTransactionAsync();
+        
+        return result.ToImmutableList();
     }
 
-    public Task UpdateAsync(ResumeEntity entity, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(ResumeEntity entity, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        _dbContext.Resumes.Attach(entity);
+        await _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
+        _dbContext.Resumes.Update(entity);
+        await _dbContext.Database.CommitTransactionAsync(cancellationToken);
     }
 
-    public Task DeleteAsync(object id, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(object id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead, cancellationToken);
+        var entity = await _dbContext.Resumes.FindAsync(id, cancellationToken) ?? throw new KeyNotFoundException($"Resume with ID {id} not found.");
+        _dbContext.Resumes.Remove(entity);
+        await _dbContext.Database.CommitTransactionAsync(cancellationToken);
     }
 
     public void Save(CancellationToken cancellationToken = default)

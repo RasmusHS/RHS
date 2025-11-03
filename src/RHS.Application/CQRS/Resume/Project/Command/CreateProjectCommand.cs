@@ -14,6 +14,8 @@ public class CreateProjectCommand : ICommand
         DemoGif = demoGif;
         IsFeatured = isFeatured;
     }
+
+    public CreateProjectCommand() { }
     
     public ResumeId ResumeId { get; set; }
     public string ProjectTitle { get; }

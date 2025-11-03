@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using RHS.Application.Data;
 using RHS.Application.Data.Infrastructure;
-using RHS.Domain.Common;
 using RHS.Domain.Resume.Entities;
+using RHS.Domain.Resume.ValueObjects;
 
 namespace RHS.Infrastructure.Repositories;
 
@@ -16,44 +16,60 @@ public class ProjectRepository : IProjectRepository
         _dbContext = dbContext;
     }
     
-    public Task<ProjectEntity> AddAsync(ProjectEntity entity, CancellationToken cancellationToken = default)
+    public async Task<ProjectEntity> AddAsync(ProjectEntity entity, CancellationToken cancellationToken = default)
     {
-        _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
+        await _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
         
-        _dbContext.Projects.AddAsync(entity, cancellationToken);
-        _dbContext.Database.CommitTransactionAsync(cancellationToken);
+        await _dbContext.Projects.AddAsync(entity, cancellationToken);
+        await _dbContext.Database.CommitTransactionAsync(cancellationToken);
         
-        return Task.FromResult((ProjectEntity)entity);
+        return await Task.FromResult((ProjectEntity)entity);
     }
 
-    public Task<IEnumerable<ProjectEntity>> AddRangeAsync(List<ProjectEntity> entities, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<ProjectEntity>> AddRangeAsync(List<ProjectEntity> entities, CancellationToken cancellationToken = default)
     {
-        _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
+        await _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
         
-        _dbContext.Projects.AddRangeAsync(entities, cancellationToken);
-        _dbContext.Database.CommitTransactionAsync(cancellationToken);
+        await _dbContext.Projects.AddRangeAsync(entities, cancellationToken);
+        await _dbContext.Database.CommitTransactionAsync(cancellationToken);
         
-        return Task.FromResult((IEnumerable<ProjectEntity>)entities);
+        return await Task.FromResult((IEnumerable<ProjectEntity>)entities);
     }
 
-    public Task<Result<ProjectEntity>> GetByIdAsync(object id)
+    public async Task<ProjectEntity> GetByIdAsync(object id)
     {
-        throw new NotImplementedException();
+        await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
+        var result = await _dbContext.Projects.FindAsync(id) ?? throw new KeyNotFoundException($"Project with ID {id} not found.");
+        await _dbContext.Database.CommitTransactionAsync();
+        
+        return result;
     }
     
-    public Task<IReadOnlyList<ProjectEntity>> GetAllByResumeIdAsync(object resumeId)
+    public async Task<IReadOnlyList<ProjectEntity>> GetAllByResumeIdAsync(object resumeId)
     {
-        throw new NotImplementedException();
+        await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
+        var result = await _dbContext.Projects.AsNoTracking()
+            .Where(p => p.ResumeId == (ResumeId)resumeId)
+            .ToListAsync();
+        await _dbContext.Database.CommitTransactionAsync();
+        
+        return result;
     }
 
-    public Task UpdateAsync(ProjectEntity entity, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(ProjectEntity entity, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        _dbContext.Projects.Attach(entity);
+        await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead, cancellationToken);
+        _dbContext.Projects.Update(entity);
+        await _dbContext.Database.CommitTransactionAsync(cancellationToken);
     }
 
-    public Task DeleteAsync(object id, CancellationToken cancellationToken = default)
+    public async Task DeleteAsync(object id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead, cancellationToken);
+        var entity = await _dbContext.Projects.FindAsync(id) ?? throw new KeyNotFoundException($"Project with ID {id} not found.");
+        _dbContext.Projects.Remove(entity);
+        await _dbContext.Database.CommitTransactionAsync(cancellationToken);
     }
     
     public void Save(CancellationToken cancellationToken = default)

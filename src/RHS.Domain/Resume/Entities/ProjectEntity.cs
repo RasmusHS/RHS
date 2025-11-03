@@ -32,6 +32,22 @@ public sealed class ProjectEntity : Entity<ProjectId>
         
         return Result.Ok<ProjectEntity>(new ProjectEntity(ProjectId.Create(), resumeId, projectTitle, description, projectUrl, demoGif, isFeatured));
     }
+
+    public void Update(string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured)
+    {
+        Ensure.That(projectTitle, nameof(projectTitle)).IsNotNullOrEmpty();
+        Ensure.That(description, nameof(description)).IsNotNullOrEmpty();
+        Ensure.That(projectUrl, nameof(projectUrl)).IsNotNullOrEmpty();
+        Ensure.That(demoGif, nameof(demoGif)).IsNotNull();
+        
+        ProjectTitle = projectTitle;
+        Description = description;
+        ProjectUrl = projectUrl;
+        DemoGif = demoGif;
+        IsFeatured = isFeatured;
+        
+        LastModified = DateTime.Now;
+    }
     
     public ResumeId ResumeId { get; private set; }
     public string ProjectTitle { get; private set; }

@@ -54,12 +54,23 @@ public sealed class ResumeEntity : AggregateRoot<ResumeId>
         _projects.AddRange(projects);
     }
     
-    public void Update(string introduction, FullName fullName, Address address, Email email, string gitHubLink, string linkedInLink, byte[] photo)
+    public void Update(string introduction, string firstName, string lastName, string street, string zipCode, string city, string email, string gitHubLink, string linkedInLink, byte[] photo)
     {
+        Ensure.That(introduction, nameof(introduction)).IsNotNullOrEmpty();
+        Ensure.That(firstName, nameof(firstName)).IsNotNullOrEmpty();
+        Ensure.That(lastName, nameof(lastName)).IsNotNullOrEmpty();
+        Ensure.That(street, nameof(street)).IsNotNullOrEmpty();
+        Ensure.That(zipCode, nameof(zipCode)).IsNotNullOrEmpty();
+        Ensure.That(city, nameof(city)).IsNotNullOrEmpty();
+        Ensure.That(email, nameof(email)).IsNotNullOrEmpty();
+        Ensure.That(gitHubLink, nameof(gitHubLink)).IsNotNullOrEmpty();
+        Ensure.That(linkedInLink, nameof(linkedInLink)).IsNotNullOrEmpty();
+        Ensure.That(photo, nameof(photo)).IsNotNull();
+        
         Introduction = introduction;
-        FullName = fullName;
-        Address = address;
-        Email = email;
+        FullName = FullName.Create(firstName, lastName).Value;
+        Address = Address.Create(street, zipCode, city).Value;
+        Email = Email.Create(email).Value;
         GitHubLink = gitHubLink;
         LinkedInLink = linkedInLink;
         Photo = photo;

@@ -23,7 +23,7 @@ public class Address : ValueObject
         Ensure.That(zipcode, nameof(zipcode)).IsNotNullOrEmpty();
         Ensure.That(city, nameof(city)).IsNotNullOrEmpty();
         
-        return Result.Ok<Address>(new Address(street, city, zipcode));
+        return Result.Ok<Address>(new Address(street, zipcode, city));
     }
     protected override IEnumerable<object> GetEqualityComponents()
     {
