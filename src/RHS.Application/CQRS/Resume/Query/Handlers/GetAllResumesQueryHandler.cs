@@ -1,6 +1,0 @@
-﻿namespace RHS.Application.CQRS.Resume.Query.Handlers;
-
-public class GetAllResumesQueryHandler
-{
-    
-}

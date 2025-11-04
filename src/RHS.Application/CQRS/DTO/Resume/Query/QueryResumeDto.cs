@@ -1,19 +1,18 @@
 ﻿using RHS.Application.CQRS.DTO.Resume.Project.Query;
-using RHS.Domain.Common.ValueObjects;
 using RHS.Domain.Resume.ValueObjects;
 
 namespace RHS.Application.CQRS.DTO.Resume.Query;
 
 public record QueryResumeDto : DtoBase
 {
-    public QueryResumeDto(ResumeId id, string introduction, FullName fullName, Address address, Email email, 
+    public QueryResumeDto(ResumeId id, string introduction, string firstName, string lastName, string street, string zipCode, string city, string email, 
         string gitHubLink, string linkedInLink, byte[] photo, List<QueryProjectDto> projects, DateTime created, DateTime lastModified)
     {
         Id = id;
         
         Introduction = introduction;
-        FullName = fullName;
-        Address = address;
+        FirstName = firstName;
+        LastName = lastName;
         Email = email;
         GitHubLink = gitHubLink;
         LinkedInLink = linkedInLink;
@@ -29,9 +28,12 @@ public record QueryResumeDto : DtoBase
     
     public ResumeId Id { get; set; }
     public string Introduction { get; set; }
-    public FullName FullName { get; set; }
-    public Address Address { get; set; }
-    public Email Email { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Street { get; set; }
+    public string ZipCode { get; set; }
+    public string City { get; set; }
+    public string Email { get; set; }
     public string GitHubLink { get; set; }
     public string LinkedInLink { get; set; }
     public byte[] Photo { get; set; }

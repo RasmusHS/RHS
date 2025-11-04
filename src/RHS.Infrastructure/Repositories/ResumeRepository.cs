@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using RHS.Application.Data;
 using RHS.Application.Data.Infrastructure;
 using RHS.Domain.Resume;
+using RHS.Domain.Resume.ValueObjects;
 
 namespace RHS.Infrastructure.Repositories;
 
@@ -53,6 +54,15 @@ public class ResumeRepository : IResumeRepository
         await _dbContext.Database.CommitTransactionAsync();
         
         return result;
+    }
+    
+    public async Task<ResumeEntity> GetByIdIncludeProjectsAsync(object id)
+    {
+        await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
+        var result = _dbContext.Resumes.AsNoTracking().Include(p => p.Projects).Where(p => p.Id == (ResumeId)id);
+        var resume = await result.FirstOrDefaultAsync() ?? throw new KeyNotFoundException($"Resume with ID {id} not found.");
+        await _dbContext.Database.CommitTransactionAsync();
+        return resume;
     }
     
     public async Task<IReadOnlyList<ResumeEntity>> GetAllAsync()

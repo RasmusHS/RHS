@@ -13,14 +13,14 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     
     public DbSet<ResumeEntity> Resumes { get; set; }
     public DbSet<ProjectEntity> Projects { get; set; }
+    
     public void SaveChanges(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        base.SaveChangesAsync(cancellationToken);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
-        //base.OnModelCreating(modelBuilder);
     }
 }

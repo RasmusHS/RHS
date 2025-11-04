@@ -18,7 +18,7 @@ public class UpdateResumeCommandHandler : ICommandHandler<UpdateResumeCommand>
     
     public async Task<Result> Handle(UpdateResumeCommand command, CancellationToken cancellationToken = default)
     {
-        var resumeResult = await _resumeRepository.GetByIdAsync(command.Id);
+        var resumeResult = await _resumeRepository.GetByIdAsync(command.Id) ?? throw new KeyNotFoundException($"Resume with Id {command.Id} was not found.");
 
         if (command.Projects.Any())
         {
@@ -34,7 +34,6 @@ public class UpdateResumeCommandHandler : ICommandHandler<UpdateResumeCommand>
                 command.LinkedInLink,
                 command.Photo
             );
-            //if (resumeResult) return resumeResult;
             
             List<ProjectEntity> projects = new List<ProjectEntity>();
             foreach (var project in command.Projects)
@@ -72,7 +71,6 @@ public class UpdateResumeCommandHandler : ICommandHandler<UpdateResumeCommand>
                 command.LinkedInLink,
                 command.Photo
             );
-            //if (resumeResult.Failure) return resumeResult;
         }
         
         _resumeRepository.Save(cancellationToken);

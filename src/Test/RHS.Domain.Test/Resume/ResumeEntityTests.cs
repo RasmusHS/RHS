@@ -36,131 +36,45 @@ public class ResumeEntityTests
         Assert.Equal(linkedInLink, result.Value.LinkedInLink);
         Assert.Equal(photo, result.Value.Photo);
     }
-    
-    [Fact]
-    public void Create_ShouldReturnFailure_WhenIntroductionIsNull()
-    {
-        // Arrange
-        var fullName = FullName.Create("John", "Doe").Value;
-        var address = Address.Create("123 Street", "12345", "City").Value;
-        var email = Email.Create("test@example.com").Value;
-        var gitHubLink = "https://github.com/johndoe";
-        var linkedInLink = "https://linkedin.com/in/johndoe";
-        var photo = new byte[] { 1, 2, 3 };
 
-        // Act
-        Action action = new Action(() => ResumeEntity.Create(null, fullName, address, email, gitHubLink, linkedInLink, photo));
-
-        // Assert
-        Assert.Throws<ArgumentNullException>(action);
-    }
-
-    [Fact]
-    public void Create_ShouldReturnFailure_WhenFullNameIsNull()
+    [Theory]
+    [InlineData("", "John", "Doe", "123 Street", "12345", "City", "test@example.com", "https://github.com/johndoe", "https://linkedin.com/in/johndoe", new byte[] { 1, 2, 3 })]
+    [InlineData("Introduction text", "John", "Doe", "123 Street", "12345", "City", "test@example.com", "", "https://linkedin.com/in/johndoe", new byte[] { 1, 2, 3 })]
+    [InlineData("Introduction text", "John", "Doe", "123 Street", "12345", "City", "test@example.com", "https://github.com/johndoe", "", new byte[] { 1, 2, 3 })]
+    public void Create_ShouldReturnFailure_WhenParametersAreEmpty(string introduction, string firstName, string lastName, string street, string zipcode, string city, string email, string gitHubLink, string linkedInLink, byte[] photo)
     {
         // Arrange
-        var introduction = "Introduction text";
-        var address = Address.Create("123 Street", "12345", "City").Value;
-        var email = Email.Create("test@example.com").Value;
-        var gitHubLink = "https://github.com/johndoe";
-        var linkedInLink = "https://linkedin.com/in/johndoe";
-        var photo = new byte[] { 1, 2, 3 };
+        var fullName = FullName.Create(firstName, lastName).Value;
+        var address = Address.Create(street, zipcode, city).Value;
+        var emailVar = Email.Create(email).Value;
         
         // Act
-        Action action = new Action(() => ResumeEntity.Create(introduction, null, address, email, gitHubLink, linkedInLink, photo));
+        Action action = new Action(() => ResumeEntity.Create(introduction, fullName, address, emailVar, gitHubLink, linkedInLink, photo));
         
         // Assert
-        Assert.Throws<ArgumentNullException>(action);
+        Assert.Throws<ArgumentException>(action);
     }
     
-    [Fact]
-    public void Create_ShouldReturnFailure_WhenAddressIsNull()
+    [Theory]
+    [InlineData(null, "John", "Doe", "123 Street", "12345", "City", "test@example.com", "https://github.com/johndoe", "https://linkedin.com/in/johndoe", new byte[] { 1, 2, 3 })]
+    [InlineData("Introduction text", "John", "Doe", "123 Street", "12345", "City", "test@example.com", null, "https://linkedin.com/in/johndoe", new byte[] { 1, 2, 3 })]
+    [InlineData("Introduction text", "John", "Doe", "123 Street", "12345", "City", "test@example.com", "https://github.com/johndoe", null, new byte[] { 1, 2, 3 })]
+    [InlineData("Introduction text", "John", "Doe", "123 Street", "12345", "City", "test@example.com", "https://github.com/johndoe", "https://linkedin.com/in/johndoe", null)]
+    public void Create_ShouldReturnFailure_WhenParametersAreNull(string introduction, string firstName, string lastName, string street, string zipcode, string city, string email, string gitHubLink, string linkedInLink, byte[] photo)
     {
         // Arrange
-        var introduction = "Introduction text";
-        var fullName = FullName.Create("John", "Doe").Value;
-        var email = Email.Create("test@example.com").Value;
-        var gitHubLink = "https://github.com/johndoe";
-        var linkedInLink = "https://linkedin.com/in/johndoe";
-        var photo = new byte[] { 1, 2, 3 };
+        var fullName = FullName.Create(firstName, lastName).Value;
+        var address = Address.Create(street, zipcode, city).Value;
+        var emailVar = Email.Create(email).Value;
         
         // Act
-        Action action = new Action(() => ResumeEntity.Create(introduction, fullName, null, email, gitHubLink, linkedInLink, photo));
+        Action action = new Action(() => ResumeEntity.Create(introduction, fullName, address, emailVar, gitHubLink, linkedInLink, photo));
         
         // Assert
         Assert.Throws<ArgumentNullException>(action);
-    }
-    
-    [Fact]
-    public void Create_ShouldReturnFailure_WhenEmailIsNull()
-    {
-        // Arrange
-        var introduction = "Introduction text";
-        var fullName = FullName.Create("John", "Doe").Value;
-        var address = Address.Create("123 Street", "12345", "City").Value;
-        var gitHubLink = "https://github.com/johndoe";
-        var linkedInLink = "https://linkedin.com/in/johndoe";
-        var photo = new byte[] { 1, 2, 3 };
-        
-        // Act
-        Action action = new Action(() => ResumeEntity.Create(introduction, fullName, address, null, gitHubLink, linkedInLink, photo));
-        
-        // Assert
-        Assert.Throws<ArgumentNullException>(action);
-    }
-    
-    [Fact]
-    public void Create_ShouldReturnFailure_WhenGitHubLinkIsNull()
-    {
-        // Arrange
-        var introduction = "Introduction text";
-        var fullName = FullName.Create("John", "Doe").Value;
-        var address = Address.Create("123 Street", "12345", "City").Value;
-        var email = Email.Create("test@example.com").Value;
-        var linkedInLink = "https://linkedin.com/in/johndoe";
-        var photo = new byte[] { 1, 2, 3 };
-        
-        // Act
-        Action action = new Action(() => ResumeEntity.Create(introduction, fullName, address, email, null, linkedInLink, photo));
-        
-        // Assert
-        Assert.Throws<ArgumentNullException>(action);
-    }
-    
-    [Fact]
-    public void Create_ShouldReturnFailure_WhenLinkedInLinkIsNull()
-    {
-        // Arrange
-        var introduction = "Introduction text";
-        var fullName = FullName.Create("John", "Doe").Value;
-        var address = Address.Create("123 Street", "12345", "City").Value;
-        var email = Email.Create("test@example.com").Value;
-        var gitHubLink = "https://github.com/johndoe";
-        var photo = new byte[] { 1, 2, 3 };
-        
-        // Act
-        Action action = new Action(() => ResumeEntity.Create(introduction, fullName, address, email, gitHubLink, null, photo));
-        
-        // Assert
-        Assert.Throws<ArgumentNullException>(action);
-    }
-    
-    [Fact]
-    public void Create_ShouldReturnFailure_WhenPhotoIsNull()
-    {
-        // Arrange
-        var introduction = "Introduction text";
-        var fullName = FullName.Create("John", "Doe").Value;
-        var address = Address.Create("123 Street", "12345", "City").Value;
-        var email = Email.Create("test@example.com").Value;
-        var gitHubLink = "https://github.com/johndoe";
-        var linkedInLink = "https://linkedin.com/in/johndoe";
-        
-        // Act
-        Action action = new Action(() => ResumeEntity.Create(introduction, fullName, address, email, gitHubLink, linkedInLink, null));
-        
-        // Assert
-        Assert.Throws<ArgumentNullException>(action);
+        Assert.Throws<ArgumentNullException>(() => ResumeEntity.Create(introduction, null, address, emailVar, gitHubLink, linkedInLink, photo));
+        Assert.Throws<ArgumentNullException>(() => ResumeEntity.Create(introduction, fullName, null, emailVar, gitHubLink, linkedInLink, photo));
+        Assert.Throws<ArgumentNullException>(() => ResumeEntity.Create(introduction, fullName, address, null, gitHubLink, linkedInLink, photo));
     }
     
     [Fact]

@@ -13,7 +13,7 @@ public static class DependencyInjection
     {
         services.AddDbContext<ApplicationDbContext>(options =>
             options
-                .UseMySql(serverVersion: ServerVersion.AutoDetect(configuration.GetConnectionString("Live")), connectionString: configuration.GetConnectionString("Live"))
+                .UseMySql(serverVersion: ServerVersion.AutoDetect(configuration.GetConnectionString("Live")), connectionString: configuration.GetConnectionString("Live")) // TODO: Change to appropriate Azure database
                 .UseSnakeCaseNamingConvention());
         
         services.AddScoped<IApplicationDbContext>(provider =>

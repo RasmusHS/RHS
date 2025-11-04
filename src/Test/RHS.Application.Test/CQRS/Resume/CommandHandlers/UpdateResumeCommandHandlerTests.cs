@@ -51,7 +51,7 @@ public class UpdateResumeCommandHandlerTests
         var resumeRepositoryMock = new Mock<IResumeRepository>();
         var projectRepositoryMock = new Mock<IProjectRepository>();
 
-        resumeRepositoryMock.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(Result.Ok(resume));
+        resumeRepositoryMock.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(Result.Ok(resume).Value);
         var handler = new UpdateResumeCommandHandler(resumeRepositoryMock.Object, projectRepositoryMock.Object);
         
         // Act
@@ -99,6 +99,36 @@ public class UpdateResumeCommandHandlerTests
         resumeRepositoryMock.Verify(r => r.UpdateAsync(It.IsAny<ResumeEntity>(), It.IsAny<CancellationToken>()), Times.Never);
         projectRepositoryMock.Verify(p => p.AddRangeAsync(It.IsAny<List<ProjectEntity>>(), It.IsAny<CancellationToken>()), Times.Never);
         resumeRepositoryMock.Verify(r => r.Save(It.IsAny<CancellationToken>()), Times.Once);
+    }
+    
+    [Fact]
+    public async Task Handle_ThrowsKeyNotFoundException_WhenResumeDoesNotExist()
+    {
+        // Arrange
+        var command = new UpdateResumeCommand(
+            ResumeId.Create().Value, 
+            "Updated Introduction",
+            "John",
+            "Doe",
+            "123 Street",
+            "12345",
+            "City",
+            "test@example.com",
+            "https://github.com/johndoe",
+            "https://linkedin.com/in/johndoe",
+            new byte[] { 1, 2, 3 },
+            new List<CreateProjectCommand>()
+            );
+
+        var resumeRepositoryMock = new Mock<IResumeRepository>();
+        resumeRepositoryMock.Setup(repo => repo.GetByIdAsync(command.Id)).ReturnsAsync((ResumeEntity)null);
+
+        var projectRepositoryMock = new Mock<IProjectRepository>();
+
+        var handler = new UpdateResumeCommandHandler(resumeRepositoryMock.Object, projectRepositoryMock.Object);
+        
+        // Act & Assert
+        await Assert.ThrowsAsync<KeyNotFoundException>(() => handler.Handle(command));
     }
 }
 

@@ -1,6 +1,22 @@
-﻿namespace RHS.Application.CQRS.Resume.Project.Command.Handlers;
+﻿using RHS.Application.Data;
+using RHS.Application.Data.Infrastructure;
+using RHS.Domain.Common;
 
-public class DeleteProjectCommandHandler
+namespace RHS.Application.CQRS.Resume.Project.Command.Handlers;
+
+public class DeleteProjectCommandHandler : ICommandHandler<DeleteProjectCommand>
 {
+    private readonly IProjectRepository _projectRepository;
     
+    public DeleteProjectCommandHandler(IProjectRepository projectRepository)
+    {
+        _projectRepository = projectRepository;
+    }
+    
+    public async Task<Result> Handle(DeleteProjectCommand command, CancellationToken cancellationToken = default)
+    {
+        await _projectRepository.DeleteAsync(command.Id, cancellationToken);
+        
+        return Result.Ok();
+    }
 }

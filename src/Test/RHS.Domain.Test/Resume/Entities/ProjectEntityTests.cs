@@ -32,106 +32,40 @@ public class ProjectEntityTests
         Assert.Equal(demoGif, result.Value.DemoGif);
         Assert.Equal(isFeatured, result.Value.IsFeatured);
     }
-    
-    [Fact]
-    public void Create_ShouldReturnFailure_WhenResumeIdIsNull()
-    {
-        // Arrange
-        var projectTitle = "Project Title";
-        var description = "Project Description";
-        var projectUrl = "https://example.com";
-        var demoGif = new byte[] { 1, 2, 3 };
-        var isFeatured = true;
 
-        // Act
-        Action action = new Action(() => ProjectEntity.Create(null, projectTitle, description, projectUrl, demoGif, isFeatured));
-        
-        // Assert
-        Assert.Throws<ArgumentNullException>(action);
-    }
-
-    [Fact]
-    public void Create_ShouldReturnFailure_WhenProjectTitleIsNullOrEmpty()
+    [Theory]
+    [InlineData("", "Project Description", "https://example.com", new byte[] { 1, 2, 3 }, true)]
+    [InlineData("Project Title", "", "https://example.com", new byte[] { 1, 2, 3 }, true)]
+    [InlineData("Project Title", "Project Description", "", new byte[] { 1, 2, 3 }, true)]
+    public void Create_ShouldReturnFailure_WhenParametersAreEmpty(string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured)
     {
         // Arrange
-        var resumeId = ResumeId.Create();
-        var projectTitle = "";
-        var description = "Project Description";
-        var projectUrl = "https://example.com";
-        var demoGif = new byte[] { 1, 2, 3 };
-        var isFeatured = true;
-        
-        // Act
-        Action action1 = new Action(() => ProjectEntity.Create(resumeId, null, description, projectUrl, demoGif, isFeatured));
-        Action action2 = new Action(() => ProjectEntity.Create(resumeId, projectTitle, description, projectUrl, demoGif, isFeatured));
+        var resumeId = ResumeId.Create().Value;
         
         // Assert
-        Assert.Throws<ArgumentNullException>(action1);
-        Assert.Throws<ArgumentException>(action2);
+        Assert.Throws<ArgumentException>(() => ProjectEntity.Create(resumeId, projectTitle, description, projectUrl, demoGif, isFeatured));
     }
     
-    [Fact]
-    public void Create_ShouldReturnFailure_WhenDescriptionIsNullOrEmpty()
+    [Theory]
+    [InlineData(null, "Project Description", "https://example.com", new byte[] { 1, 2, 3 }, true)]
+    [InlineData("Project Title", null, "https://example.com", new byte[] { 1, 2, 3 }, true)]
+    [InlineData("Project Title", "Project Description", null, new byte[] { 1, 2, 3 }, true)]
+    [InlineData("Project Title", "Project Description", "https://example.com", null, true)]
+    public void Create_ShouldReturnFailure_WhenParametersAreNull(string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured)
     {
         // Arrange
-        var resumeId = ResumeId.Create();
-        var projectTitle = "Project Title";
-        var description = "";
-        var projectUrl = "https://example.com";
-        var demoGif = new byte[] { 1, 2, 3 };
-        var isFeatured = true;
-        
-        // Act
-        Action action1 = new Action(() => ProjectEntity.Create(resumeId, projectTitle, null, projectUrl, demoGif, isFeatured));
-        Action action2 = new Action(() => ProjectEntity.Create(resumeId, projectTitle, description, projectUrl, demoGif, isFeatured));
+        var resumeId = ResumeId.Create().Value;
         
         // Assert
-        Assert.Throws<ArgumentNullException>(action1);
-        Assert.Throws<ArgumentException>(action2);
-    }
-    
-    [Fact]
-    public void Create_ShouldReturnFailure_WhenProjectUrlIsNullOrEmpty()
-    {
-        // Arrange
-        var resumeId = ResumeId.Create();
-        var projectTitle = "Project Title";
-        var description = "Project Description";
-        var projectUrl = "";
-        var demoGif = new byte[] { 1, 2, 3 };
-        var isFeatured = true;
-        
-        // Act
-        Action action1 = new Action(() => ProjectEntity.Create(resumeId, projectTitle, description, null, demoGif, isFeatured));
-        Action action2 = new Action(() => ProjectEntity.Create(resumeId, projectTitle, description, projectUrl, demoGif, isFeatured));
-        
-        // Assert
-        Assert.Throws<ArgumentNullException>(action1);
-        Assert.Throws<ArgumentException>(action2);
-    }
-    
-    [Fact]
-    public void Create_ShouldReturnFailure_WhenDemoGifIsNull()
-    {
-        // Arrange
-        var resumeId = ResumeId.Create();
-        var projectTitle = "Project Title";
-        var description = "Project Description";
-        var projectUrl = "https://example.com";
-        var isFeatured = true;
-        
-        // Act
-        Action action = new Action(() => ProjectEntity.Create(resumeId, projectTitle, description, projectUrl, null, isFeatured));
-        
-        // Assert
-        Assert.Throws<ArgumentNullException>(action);
+        Assert.Throws<ArgumentNullException>(() => ProjectEntity.Create(resumeId, projectTitle, description, projectUrl, demoGif, isFeatured));
     }
     
     [Fact]
     public void Update_ShouldUpdateAllFields_WhenParametersAreValid()
     {
         // Arrange
-        var project = ProjectEntity.Create(ResumeId.Create(), "Old Title", "Old Description", "https://oldurl.com", new byte[] { 1, 2, 3 }, false).Value;
+        var resumeId = ResumeId.Create().Value;
+        var project = ProjectEntity.Create(resumeId, "Old Title", "Old Description", "https://oldurl.com", new byte[] { 1, 2, 3 }, false).Value;
         var newTitle = "New Title";
         var newDescription = "New Description";
         var newUrl = "https://newurl.com";
@@ -139,7 +73,7 @@ public class ProjectEntityTests
         var newIsFeatured = true;
         
         // Act
-        project.Update(newTitle, newDescription, newUrl, newDemoGif, newIsFeatured);
+        project.Update(resumeId, newTitle, newDescription, newUrl, newDemoGif, newIsFeatured);
         
         // Assert
         Assert.Equal(newTitle, project.ProjectTitle);
@@ -149,47 +83,33 @@ public class ProjectEntityTests
         Assert.Equal(newIsFeatured, project.IsFeatured);
         Assert.True(project.LastModified > project.Created);
     }
-    
-    [Fact]
-    public void Update_ShouldThrowException_WhenProjectTitleIsNullOrEmpty()
+
+    [Theory]
+    [InlineData("", "New Description", "https://newurl.com", new byte[] { 4, 5, 6 }, true)]
+    [InlineData("New Title", "", "https://newurl.com", new byte[] { 4, 5, 6 }, true)]
+    [InlineData("New Title", "New Description", "", new byte[] { 4, 5, 6 }, true)]
+    public void Update_ShouldThrowException_WhenParametersAreEmpty(string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured)
     {
         // Arrange
-        var project = ProjectEntity.Create(ResumeId.Create(), "Title", "Description", "https://url.com", new byte[] { 1, 2, 3 }, false).Value;
-
+        var resumeId = ResumeId.Create().Value;
+        var project = ProjectEntity.Create(resumeId, "Title", "Description", "https://url.com", new byte[] { 1, 2, 3 }, false).Value;
+        
         // Assert
-        Assert.Throws<ArgumentNullException>(() => project.Update(null, "Description", "https://url.com", new byte[] { 1, 2, 3 }, false));
-        Assert.Throws<ArgumentException>(() => project.Update("", "Description", "https://url.com", new byte[] { 1, 2, 3 }, false));
+        Assert.Throws<ArgumentException>(() => project.Update(resumeId, projectTitle, description, projectUrl, demoGif, isFeatured));
     }
     
-    [Fact]
-    public void Update_ShouldThrowException_WhenDescriptionIsNullOrEmpty()
+    [Theory]
+    [InlineData(null, "New Description", "https://newurl.com", new byte[] { 4, 5, 6 }, true)]
+    [InlineData("New Title", null, "https://newurl.com", new byte[] { 4, 5, 6 }, true)]
+    [InlineData("New Title", "New Description", null, new byte[] { 4, 5, 6 }, true)]
+    [InlineData("New Title", "New Description", "https://newurl.com", null, true)]
+    public void Update_ShouldThrowException_WhenParametersAreNull(string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured)
     {
         // Arrange
-        var project = ProjectEntity.Create(ResumeId.Create(), "Title", "Description", "https://url.com", new byte[] { 1, 2, 3 }, false).Value;
-
+        var resumeId = ResumeId.Create().Value;
+        var project = ProjectEntity.Create(resumeId, "Title", "Description", "https://url.com", new byte[] { 1, 2, 3 }, false).Value;
+        
         // Assert
-        Assert.Throws<ArgumentNullException>(() => project.Update("Title", null, "https://url.com", new byte[] { 1, 2, 3 }, false));
-        Assert.Throws<ArgumentException>(() => project.Update("Title", "", "https://url.com", new byte[] { 1, 2, 3 }, false));
-    }
-    
-    [Fact]
-    public void Update_ShouldThrowException_WhenUrlIsNullOrEmpty()
-    {
-        // Arrange
-        var project = ProjectEntity.Create(ResumeId.Create(), "Title", "Description", "https://url.com", new byte[] { 1, 2, 3 }, false).Value;
-
-        // Assert
-        Assert.Throws<ArgumentNullException>(() => project.Update("Title", "Description", null, new byte[] { 1, 2, 3 }, false));
-        Assert.Throws<ArgumentException>(() => project.Update("Title", "Description", "", new byte[] { 1, 2, 3 }, false));
-    }
-    
-    [Fact]
-    public void Update_ShouldThrowException_WhenDemoGifIsNull()
-    {
-        // Arrange
-        var project = ProjectEntity.Create(ResumeId.Create(), "Title", "Description", "https://url.com", new byte[] { 1, 2, 3 }, false).Value;
-
-        // Assert
-        Assert.Throws<ArgumentNullException>(() => project.Update("Title", "Description", "https://url.com", null, false));
+        Assert.Throws<ArgumentNullException>(() => project.Update(resumeId, projectTitle, description, projectUrl, demoGif, isFeatured));
     }
 }

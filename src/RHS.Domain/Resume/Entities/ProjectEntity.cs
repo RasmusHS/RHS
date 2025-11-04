@@ -33,13 +33,15 @@ public sealed class ProjectEntity : Entity<ProjectId>
         return Result.Ok<ProjectEntity>(new ProjectEntity(ProjectId.Create(), resumeId, projectTitle, description, projectUrl, demoGif, isFeatured));
     }
 
-    public void Update(string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured)
+    public void Update(ResumeId resumeId, string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured)
     {
+        Ensure.That(resumeId, nameof(resumeId)).IsNotNull();
         Ensure.That(projectTitle, nameof(projectTitle)).IsNotNullOrEmpty();
         Ensure.That(description, nameof(description)).IsNotNullOrEmpty();
         Ensure.That(projectUrl, nameof(projectUrl)).IsNotNullOrEmpty();
         Ensure.That(demoGif, nameof(demoGif)).IsNotNull();
         
+        ResumeId = resumeId;
         ProjectTitle = projectTitle;
         Description = description;
         ProjectUrl = projectUrl;
