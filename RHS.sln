@@ -20,6 +20,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RHS.Domain.Test", "src\Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers", "src\Test\Helpers\Helpers.csproj", "{F2EA4B16-E31F-41A2-9728-234B9E9E4D32}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{63270561-AABE-4340-96DD-B0B21A16962A}"
+	ProjectSection(SolutionItems) = preProject
+		ER_Mapping_Diagram_V2.png = ER_Mapping_Diagram_V2.png
+		ER_Mapping_Diagram_V1.png = ER_Mapping_Diagram_V1.png
+		ERDiagram_V1.png = ERDiagram_V1.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
