@@ -1,0 +1,32 @@
+services:
+  rhs_dev.db:
+    image: postgres:latest
+    container_name: rhs_dev.db
+    environment:
+      - POSTGRES_DB=rhs_dev
+      - POSTGRES_USER=rhs_dev
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.containers/db:/var/lib/postgresql/data
+
+  rhs.api:
+    ports:
+      - "5099:80"
+      - "7258:443"
+    image: ${DOCKER_REGISTRY-}rhsapi
+    build:
+      context: .
+      dockerfile: ./RHS.API/Dockerfile
+    environment:
+      - "ASPNETCORE_ENVIRONMENT": "Development"
+      - "ASPNETCORE_URLS": "https://+:443;http://+:80"
+      #- "ASPNETCORE_HTTP_PORT": "5099"
+      - "ASPNETCORE_Kestrel__Certificates__Default__Password": "eeJD2puyfUyYYPXfQt"
+      - "ASPNETCORE_Kestrel__Certificates__Default__Path": "/https/aspnetapp.pfx"
+      - "ConnectionStrings:Database": "Host=rhs_dev.db;Port=5432;Database=rhs_dev;Username=rhs_dev;Password=postgres;Include Error Detail=true"
+    volumes:
+      - ~/.aspnet/https:/https:ro
+    depends_on:
+      - rhs_dev.db

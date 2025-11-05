@@ -9,13 +9,25 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPersistence(
         this IServiceCollection services,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        bool isDevelopment)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
-            options
-                .UseMySql(serverVersion: ServerVersion.AutoDetect(configuration.GetConnectionString("Live")), connectionString: configuration.GetConnectionString("Live")) // TODO: Change to appropriate Azure database
-                .UseSnakeCaseNamingConvention());
-        
+        {
+            if (isDevelopment == false)
+            {
+                options
+                    .UseAzureSql(configuration.GetConnectionString("DefaultConnection"))
+                    .UseSnakeCaseNamingConvention();
+            }
+            else
+            {
+                options
+                    .UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+                    .UseSnakeCaseNamingConvention();
+            }
+        });
+
         services.AddScoped<IApplicationDbContext>(provider =>
             provider.GetRequiredService<ApplicationDbContext>());
         
