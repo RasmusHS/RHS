@@ -14,9 +14,21 @@ public class GetProjectQueryHandler : IQueryHandler<GetProjectQuery, QueryProjec
         _projectRepository = projectRepository;
     }
 
-    public Task<Result<QueryProjectDto>> Handle(GetProjectQuery query, CancellationToken cancellationToken = default)
+    public async Task<Result<QueryProjectDto>> Handle(GetProjectQuery query, CancellationToken cancellationToken = default)
     {
-        // TODO: Implement the logic to retrieve a single project by ID
-        throw new NotImplementedException();
+        var projectResult = await _projectRepository.GetByIdAsync(query.Id) ?? throw new KeyNotFoundException($"Project with ID {query.Id} not found.");
+        
+        var projectDto = new QueryProjectDto(
+            projectResult.Id,
+            projectResult.ResumeId,
+            projectResult.ProjectTitle,
+            projectResult.Description,
+            projectResult.ProjectUrl,
+            projectResult.DemoGif,
+            projectResult.IsFeatured,
+            projectResult.Created,
+            projectResult.LastModified);
+        
+        return Result.Ok(projectDto);
     }
 }

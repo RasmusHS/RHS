@@ -14,9 +14,30 @@ public class GetAllProjectsQueryHandler : IQueryHandler<GetAllProjectsQuery, Col
         _projectRepository = projectRepository;
     }
     
-    public Task<Result<CollectionResponseBase<QueryProjectDto>>> Handle(GetAllProjectsQuery query, CancellationToken cancellationToken = default)
+    public async Task<Result<CollectionResponseBase<QueryProjectDto>>> Handle(GetAllProjectsQuery query, CancellationToken cancellationToken = default)
     {
-        // TODO: Implement the logic to retrieve all projects
-        throw new NotImplementedException();
+        List<QueryProjectDto> projects = new List<QueryProjectDto>();
+        var projectsResult = await _projectRepository.GetAllByResumeIdAsync(query.ResumeId) ?? throw new KeyNotFoundException($"Projects for Resume ID {query.ResumeId} not found.");
+
+        foreach (var project in projectsResult)
+        {
+            QueryProjectDto dto = new QueryProjectDto(
+                project.Id, 
+                project.ResumeId, 
+                project.ProjectTitle, 
+                project.Description, 
+                project.ProjectUrl, 
+                project.DemoGif, 
+                project.IsFeatured, 
+                project.Created, 
+                project.LastModified
+                );
+            
+            projects.Add(dto);
+        }
+        return new CollectionResponseBase<QueryProjectDto>()
+        {
+            Data = projects
+        };
     }
 }

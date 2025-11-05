@@ -1,9 +1,18 @@
-﻿namespace RHS.Application.CQRS.DTO.Resume.Project.Command;
+﻿using RHS.Domain.Resume.ValueObjects;
 
-public record DeleteProjectDto : DtoBase// TODO: Implement properties
+namespace RHS.Application.CQRS.DTO.Resume.Project.Command;
+
+public record DeleteProjectDto : DtoBase
 {
-    public DeleteProjectDto()
+    public DeleteProjectDto(ProjectId id, DateTime created, DateTime lastModified)
     {
+        Id = id;
         
+        Created = created;
+        LastModified = lastModified;
     }
+    
+    public DeleteProjectDto() { }
+    
+    public ProjectId Id { get; set; }
 }
