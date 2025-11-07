@@ -16,6 +16,10 @@ public class CreateProjectCommandHandler : ICommandHandler<CreateProjectCommand>
     
     public async Task<Result> Handle(CreateProjectCommand command, CancellationToken cancellationToken = default)
     {
+        if (command.ResumeId == null)
+        {
+            return Result.Fail(Errors.General.ValueIsRequired(nameof(command.ResumeId)));
+        }
         Result<ProjectEntity> projectResult = ProjectEntity.Create(
             command.ResumeId,
             command.ProjectTitle,

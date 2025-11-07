@@ -1,4 +1,6 @@
-﻿using RHS.Application.CQRS.DTO.Resume.Project.Command;
+﻿using FluentValidation;
+using RHS.Application.CQRS.DTO.Resume.Project.Command;
+using RHS.Domain.Common;
 using RHS.Domain.Common.ValueObjects;
 using RHS.Domain.Resume.ValueObjects;
 
@@ -38,4 +40,34 @@ public record CreateResumeDto
     public string LinkedInLink { get; set; }
     public byte[] Photo { get; set; }
     public List<CreateProjectDto>? Projects { get; set; }
+
+    public class Validator : AbstractValidator<CreateResumeDto>
+    {
+        public Validator(bool containsProjects)
+        {
+            if (containsProjects == true)
+            {
+                RuleFor(x => x.Introduction).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(Introduction)).Code);
+                RuleFor(x => x.FirstName).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(FirstName)).Code);
+                RuleFor(x => x.LastName).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(LastName)).Code);
+                RuleFor(x => x.Street).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(Street)).Code);
+                RuleFor(x => x.ZipCode).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(ZipCode)).Code);
+                RuleFor(x => x.City).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(City)).Code);
+                RuleFor(x => x.Email).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(Email)).Code);
+                RuleFor(x => x.Photo).NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(Photo)).Code);
+                RuleForEach(x => x.Projects).SetValidator(new CreateProjectDto.Validator());
+            }
+            else
+            {
+                RuleFor(x => x.Introduction).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(Introduction)).Code);
+                RuleFor(x => x.FirstName).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(FirstName)).Code);
+                RuleFor(x => x.LastName).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(LastName)).Code);
+                RuleFor(x => x.Street).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(Street)).Code);
+                RuleFor(x => x.ZipCode).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(ZipCode)).Code);
+                RuleFor(x => x.City).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(City)).Code);
+                RuleFor(x => x.Email).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(Email)).Code);
+                RuleFor(x => x.Photo).NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(Photo)).Code);
+            }
+        }
+    }
 }

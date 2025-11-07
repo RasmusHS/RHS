@@ -5,7 +5,7 @@ namespace RHS.Application.CQRS.Resume.Project.Command;
 
 public class CreateProjectCommand : ICommand
 {
-    public CreateProjectCommand(ResumeId resumeId, string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured)
+    public CreateProjectCommand(ResumeId? resumeId, string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured)
     {
         ResumeId = resumeId;
         ProjectTitle = projectTitle;
@@ -17,7 +17,7 @@ public class CreateProjectCommand : ICommand
 
     public CreateProjectCommand() { }
     
-    public ResumeId ResumeId { get; set; }
+    public ResumeId? ResumeId { get; set; }
     public string ProjectTitle { get; }
     public string Description { get; }
     public string ProjectUrl { get; }
