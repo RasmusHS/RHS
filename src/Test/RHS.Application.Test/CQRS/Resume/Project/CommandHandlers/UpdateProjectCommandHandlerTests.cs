@@ -24,7 +24,9 @@ public class UpdateProjectCommandHandlerTests
             "Updated Description",
             "https://updated-url.com",
             new byte[] { 1, 2, 3 },
-            true
+            true,
+            DateTime.Now, 
+            DateTime.Now
         );
 
         var project = ProjectEntity.Create(ResumeId.Create().Value, "Old Title", "Old Description", "https://old-url.com", new byte[] { 0 }, false);
@@ -54,7 +56,9 @@ public class UpdateProjectCommandHandlerTests
             "Updated Description",
             "https://updated-url.com",
             new byte[] { 1, 2, 3 },
-            true
+            true,
+            DateTime.Now, 
+            DateTime.Now
         );
 
         var projectRepositoryMock = new Mock<IProjectRepository>();

@@ -114,7 +114,17 @@ public class ResumeController : BaseController
                 request.GitHubLink,
                 request.LinkedInLink,
                 request.Photo,
-                ); // TODO: Update dto to include Created and LastModified
+                request.Created,
+                request.LastModified
+                ); 
+            
+            var commandResult =  await _dispatcher.Dispatch(command);
+            if (commandResult.Success)           
+            {
+                return Ok(commandResult);
+            }
+            return BadRequest(commandResult.Error.Code);
         }
+        return BadRequest(result.Errors);
     }
 }

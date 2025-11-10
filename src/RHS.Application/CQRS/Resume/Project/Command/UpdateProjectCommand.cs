@@ -5,7 +5,7 @@ namespace RHS.Application.CQRS.Resume.Project.Command;
 
 public class UpdateProjectCommand : ICommand
 {
-    public UpdateProjectCommand(ProjectId id, ResumeId resumeId, string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured)
+    public UpdateProjectCommand(ProjectId id, ResumeId resumeId, string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured, DateTime created, DateTime lastModified)
     {
         Id = id;
         ResumeId = resumeId;
@@ -15,6 +15,9 @@ public class UpdateProjectCommand : ICommand
         ProjectUrl = projectUrl;
         DemoGif = demoGif;
         IsFeatured = isFeatured;
+        
+        Created = created;
+        LastModified = lastModified;
     }
 
     public UpdateProjectCommand() { }
@@ -26,4 +29,6 @@ public class UpdateProjectCommand : ICommand
     public string ProjectUrl { get; set; }
     public byte[] DemoGif { get; set; }
     public bool IsFeatured { get; set; }
+    public DateTime Created { get; set; }
+    public DateTime LastModified { get; set; }
 }

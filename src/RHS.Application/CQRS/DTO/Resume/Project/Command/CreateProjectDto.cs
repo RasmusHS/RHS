@@ -30,7 +30,6 @@ public record CreateProjectDto
     {
         public Validator()
         {
-            //RuleFor(x => x.ResumeId).NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(ResumeId)).Code);
             RuleFor(x => x.ProjectTitle).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(ProjectTitle)).Code);
             RuleFor(x => x.Description).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(Description)).Code);
             RuleFor(x => x.ProjectUrl).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(ProjectUrl)).Code);
