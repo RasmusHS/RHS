@@ -1,4 +1,4 @@
-@RHS.API_HostAddress = http://localhost:5099
+@RHS.API_HostAddress = https://localhost:7258
 
 GET {{RHS.API_HostAddress}}/weatherforecast/
 Accept: application/json

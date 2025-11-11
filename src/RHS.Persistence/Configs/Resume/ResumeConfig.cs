@@ -35,7 +35,7 @@ public class ResumeConfig : IEntityTypeConfiguration<ResumeEntity>
         
         // One-to-many relationships
         builder.HasMany(r => r.Projects) // ProjectEntity
-            .WithOne()
+            .WithOne(p => p.ResumeEntity)
             .HasForeignKey(fk => fk.ResumeId);
     }
 }
