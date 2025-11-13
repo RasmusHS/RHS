@@ -32,6 +32,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LocalDevStuff", "LocalDevSt
 		DockerCommands.md = DockerCommands.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RHS.API.IntegrationTests", "src\Test\RHS.API.IntegrationTests\RHS.API.IntegrationTests.csproj", "{00A3726A-15B4-450C-80BD-3F8F863A06F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,7 @@ Global
 		{DF4D0DAB-B353-44E9-922B-78289945B377} = {4BE61E79-A49C-4211-AA4D-026142DFD04F}
 		{F2EA4B16-E31F-41A2-9728-234B9E9E4D32} = {4BE61E79-A49C-4211-AA4D-026142DFD04F}
 		{DC888F96-2442-421C-AA6A-F25D8B6BB0E2} = {63270561-AABE-4340-96DD-B0B21A16962A}
+		{00A3726A-15B4-450C-80BD-3F8F863A06F5} = {4BE61E79-A49C-4211-AA4D-026142DFD04F}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{708D3154-F28C-4630-A13C-F312FAE62688}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -82,5 +85,9 @@ Global
 		{F2EA4B16-E31F-41A2-9728-234B9E9E4D32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2EA4B16-E31F-41A2-9728-234B9E9E4D32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2EA4B16-E31F-41A2-9728-234B9E9E4D32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00A3726A-15B4-450C-80BD-3F8F863A06F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00A3726A-15B4-450C-80BD-3F8F863A06F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00A3726A-15B4-450C-80BD-3F8F863A06F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00A3726A-15B4-450C-80BD-3F8F863A06F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
