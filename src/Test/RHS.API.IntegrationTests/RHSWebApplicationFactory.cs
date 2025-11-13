@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.Data.Common;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using RHS.Persistence;
 using Testcontainers.PostgreSql;
 
@@ -20,6 +22,8 @@ public class RHSWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLi
         .WithVolumeMount("./.containers/db", "/var/lib/postgresql/data")
         .WithCleanUp(true)
         .Build();
+
+    //public DbConnection DbConnection => new NpgsqlConnection(((PostgreSqlContainer)_dbContainer).GetConnectionString());
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
