@@ -8,8 +8,9 @@ Nedenfor ses den seneste iteration af projektets ER mapping diagram:\
 ![alt text](https://github.com/RasmusHS/RHS/blob/Portfolio-Refactor/ER_Mapping_Diagram_V2.png "ER_Mapping_Diagram_V2")
 
 # Planer
-- [ ] Sæt API projekt op
-- [ ] Sæt docker compose op med lokal PostgreSQL db
+- [x] Sæt API projekt op
+- [x] Sæt docker compose op med lokal PostgreSQL db
 - [ ] Undersøg og setup integrationstest
-- [ ] Setup automatisk deployment til Azure op via GitHub Actions CI/CD
+- [x] Setup automatisk deployment til Azure op via GitHub Actions CI/CD
+- [ ] Setup Azure Key Vault til secrets
 - [ ] Lav simpelt statisk UI i endten React eller Blazor
