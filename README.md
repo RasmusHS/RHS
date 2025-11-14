@@ -1,3 +1,4 @@
+Arbejder i øjeblikket i branch: API-Implementation
 # Portfolio Hjemmeside/Website
 Dette portfolio projekt har 2 formål:
 1. Bruge som en mulighed for at lære nyt: Frontend (React eller Blazor), CI/CD og Azure
