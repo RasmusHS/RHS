@@ -6,7 +6,7 @@ Dette portfolio projekt har 2 formål:
 
 # Dokumentation
 Nedenfor ses den seneste iteration af projektets ER mapping diagram:\
-![alt text](https://github.com/RasmusHS/RHS/blob/Portfolio-Refactor/ER_Mapping_Diagram_V2.png "ER_Mapping_Diagram_V2")
+![alt text](https://github.com/RasmusHS/RHS/blob/master/ER_Mapping_Diagram_V2.png "ER_Mapping_Diagram_V2")
 
 # Planer
 - [x] Sæt API projekt op
