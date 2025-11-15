@@ -19,7 +19,7 @@ public class RHSWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLi
         .WithUsername("rhs_dev")
         .WithPassword("postgres")
         .WithPortBinding(5432, 5432)
-        .WithVolumeMount("./.containers/db", "/var/lib/postgresql/data")
+        //.WithVolumeMount("./.containers/db", "/var/lib/postgresql/data")
         .WithCleanUp(true)
         .Build();
 

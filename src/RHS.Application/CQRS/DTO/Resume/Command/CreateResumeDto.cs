@@ -1,13 +1,26 @@
-﻿using FluentValidation;
+﻿using System.Text.Json.Serialization;
+using FluentValidation;
 using RHS.Application.CQRS.DTO.Resume.Project.Command;
 using RHS.Domain.Common;
-using RHS.Domain.Common.ValueObjects;
-using RHS.Domain.Resume.ValueObjects;
 
 namespace RHS.Application.CQRS.DTO.Resume.Command;
 
 public record CreateResumeDto 
 {
+    /// <summary>
+    /// Constructor with projects
+    /// </summary>
+    /// <param name="introduction"></param>
+    /// <param name="firstName"></param>
+    /// <param name="lastName"></param>
+    /// <param name="street"></param>
+    /// <param name="zipCode"></param>
+    /// <param name="city"></param>
+    /// <param name="email"></param>
+    /// <param name="gitHubLink"></param>
+    /// <param name="linkedInLink"></param>
+    /// <param name="photo"></param>
+    /// <param name="projects"></param>
     public CreateResumeDto(string introduction, string firstName, string lastName, 
         string street, string zipCode, string city, 
         string email, string gitHubLink, string linkedInLink, 
@@ -25,6 +38,36 @@ public record CreateResumeDto
         Photo = photo;
         
         Projects = projects;
+    }
+    
+    /// <summary>
+    /// Constructor without projects
+    /// </summary>
+    /// <param name="introduction"></param>
+    /// <param name="firstName"></param>
+    /// <param name="lastName"></param>
+    /// <param name="street"></param>
+    /// <param name="zipCode"></param>
+    /// <param name="city"></param>
+    /// <param name="email"></param>
+    /// <param name="gitHubLink"></param>
+    /// <param name="linkedInLink"></param>
+    /// <param name="photo"></param>
+    public CreateResumeDto(string introduction, string firstName, string lastName, 
+        string street, string zipCode, string city, 
+        string email, string gitHubLink, string linkedInLink, 
+        byte[] photo)
+    {
+        Introduction = introduction;
+        FirstName = firstName;
+        LastName = lastName;
+        Street = street;
+        ZipCode = zipCode;
+        City = city;
+        Email = email;
+        GitHubLink = gitHubLink;
+        LinkedInLink = linkedInLink;
+        Photo = photo;
     }
 
     public CreateResumeDto() { }
