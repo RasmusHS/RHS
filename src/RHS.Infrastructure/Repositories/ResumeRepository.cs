@@ -60,7 +60,7 @@ public class ResumeRepository : IResumeRepository
     {
         await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
         var result = _dbContext.Resumes.AsNoTracking().Include(p => p.Projects).Where(p => p.Id == (ResumeId)id);
-        var resume = await result.FirstOrDefaultAsync() ?? throw new KeyNotFoundException($"Resume with ID {id} not found.");
+        var resume = await result.FirstOrDefaultAsync(x => Equals(x.Id, id)) ?? throw new KeyNotFoundException($"Resume with ID {id} not found.");
         await _dbContext.Database.CommitTransactionAsync();
         return resume;
     }

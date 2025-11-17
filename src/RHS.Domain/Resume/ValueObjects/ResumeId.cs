@@ -15,6 +15,11 @@ public sealed class ResumeId : ValueObject
     {
         return Result.Ok<ResumeId>(new ResumeId(Guid.NewGuid()));
     }
+
+    public static Result<ResumeId> GetExisting(Guid value)
+    {
+        return Result.Ok<ResumeId>(new ResumeId(value));
+    }
     
     protected override IEnumerable<object> GetEqualityComponents()
     {

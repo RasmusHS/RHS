@@ -51,7 +51,7 @@ public class GetResumeQueryHandlerTests
         // Assert
         Assert.True(result.Success);
         Assert.NotNull(result.Value);
-        Assert.Equal(query.Id, result.Value.Id);
+        Assert.Equal(query.Id.Value, result.Value.Id);
         Assert.NotEmpty(result.Value.Projects);
     }
     

@@ -24,7 +24,7 @@ public class GetResumeQueryHandler : IQueryHandler<GetResumeQuery, QueryResumeDt
         resumeResult.AddRangeProjects(projectsResult.ToList());
 
         var resumeDto = new QueryResumeDto(
-            resumeResult.Id,
+            resumeResult.Id.Value,
             resumeResult.Introduction,
             resumeResult.FullName.FirstName,
             resumeResult.FullName.LastName,

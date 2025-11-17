@@ -5,7 +5,7 @@ namespace RHS.Application.CQRS.DTO.Resume.Query;
 
 public record QueryResumeDto : DtoBase
 {
-    public QueryResumeDto(ResumeId id, string introduction, string firstName, string lastName, string street, string zipCode, string city, string email, 
+    public QueryResumeDto(Guid id, string introduction, string firstName, string lastName, string street, string zipCode, string city, string email, 
         string gitHubLink, string linkedInLink, byte[] photo, List<QueryProjectDto> projects, DateTime created, DateTime lastModified)
     {
         Id = id;
@@ -26,7 +26,7 @@ public record QueryResumeDto : DtoBase
 
     public QueryResumeDto() { }
     
-    public ResumeId Id { get; set; }
+    public Guid Id { get; set; }
     public string Introduction { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }

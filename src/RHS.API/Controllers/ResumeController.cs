@@ -85,9 +85,9 @@ public class ResumeController : BaseController
     
     [HttpGet]
     [Route("{id}")]
-    public async Task<IActionResult> GetResumeById(ResumeId id)
+    public async Task<IActionResult> GetResumeById(Guid id)
     {
-        var result = await _dispatcher.Dispatch(new GetResumeQuery(id));
+        var result = await _dispatcher.Dispatch(new GetResumeQuery(ResumeId.GetExisting(id).Value)) ?? throw new KeyNotFoundException($"Resume with ID {id} not found.");
         if (result.Success)
         {
             return Ok(result.Value);

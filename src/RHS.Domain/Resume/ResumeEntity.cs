@@ -24,8 +24,8 @@ public sealed class ResumeEntity : AggregateRoot<ResumeId>
         LinkedInLink = linkedInLink;
         Photo = photo;
         
-        Created = DateTime.Now;
-        LastModified = DateTime.Now;
+        Created = DateTime.UtcNow;
+        LastModified = DateTime.UtcNow;
     }
 
     public static Result<ResumeEntity> Create(string introduction, FullName fullName, Address address, 
@@ -39,7 +39,7 @@ public sealed class ResumeEntity : AggregateRoot<ResumeId>
         Ensure.That(linkedInLink, nameof(linkedInLink)).IsNotNullOrEmpty();
         Ensure.That(photo, nameof(photo)).IsNotNull();
         
-        return Result.Ok<ResumeEntity>(new ResumeEntity(ResumeId.Create(), introduction, fullName, address, email, gitHubLink, linkedInLink, photo));
+        return Result.Ok<ResumeEntity>(new ResumeEntity(ResumeId.Create().Value, introduction, fullName, address, email, gitHubLink, linkedInLink, photo));
     }
 
     public void AddProject(ProjectEntity project)
@@ -75,7 +75,7 @@ public sealed class ResumeEntity : AggregateRoot<ResumeId>
         LinkedInLink = linkedInLink;
         Photo = photo;
         
-        LastModified = DateTime.Now;
+        LastModified = DateTime.UtcNow;
     }
     
     // Properties
