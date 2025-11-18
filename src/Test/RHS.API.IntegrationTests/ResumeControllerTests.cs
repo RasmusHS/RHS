@@ -156,6 +156,7 @@ public class ResumeControllerTests : BaseIntegrationTest
         await DbContext.Database.CommitTransactionAsync();
         
         _output.WriteLine(DbContext.Resumes.AsNoTracking().Any().ToString());
+        _output.WriteLine(DbContext.Resumes.AsNoTracking().Count().ToString());
         
         // Act
         //var response = await _client.GetFromJsonAsync<QueryResumeDto>($"/api/resume/{resume.Value.Id.Value}");

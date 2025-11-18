@@ -59,8 +59,22 @@ public class ResumeRepository : IResumeRepository
     public async Task<ResumeEntity> GetByIdIncludeProjectsAsync(object id)
     {
         await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
-        var result = _dbContext.Resumes.AsNoTracking().Include(p => p.Projects).Where(p => p.Id == (ResumeId)id);
-        var resume = await result.FirstOrDefaultAsync(x => Equals(x.Id, id)) ?? throw new KeyNotFoundException($"Resume with ID {id} not found.");
+        var result = _dbContext.Resumes.AsNoTracking().Include(p => p.Projects).Where(p => p.Id == (ResumeId)id); // TODO: Fix infinite loop where a ton of resumes gets created, never saved to db and nested loop gets skipped
+        foreach (var item in result) // For debugging purposes
+        {
+            Console.WriteLine("Resume Id: " + item.Id.Value);
+            Console.WriteLine("Intro: " + item.Introduction);
+            Console.WriteLine("FullName: " + item.FullName.FirstName + item.FullName.LastName);
+            Console.WriteLine("Address: " + item.Address.Street + item.Address.ZipCode + item.Address.City);
+            Console.WriteLine("Email: " + item.Email.Value);
+            Console.WriteLine("GitHubLink: " + item.GitHubLink);
+            Console.WriteLine("LinkedInLink: " + item.LinkedInLink);
+            foreach (var project in item.Projects)
+            {
+                Console.WriteLine("Project Id " + project.Id.Value);
+            }
+        }
+        var resume = await result.FirstOrDefaultAsync(x => Equals(x.Id.Value, id)) ?? throw new KeyNotFoundException($"Resume with ID {id} not found.");
         await _dbContext.Database.CommitTransactionAsync();
         return resume;
     }
