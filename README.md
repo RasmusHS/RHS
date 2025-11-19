@@ -11,8 +11,9 @@ Nedenfor ses den seneste iteration af projektets ER mapping diagram:\
 # Planer
 - [x] Sæt API projekt op
 - [x] Sæt docker compose op med lokal PostgreSQL db
-- [ ] Undersøg og setup integrationstest
-  - [ ] Skriv tests til GET endpoints
+- [x] Undersøg og setup integrationstest
+  - [x] Skriv tests til GET endpoints
+  - [ ] Merge API-Implementation ind til master
 - [x] Setup automatisk deployment til Azure op via GitHub Actions CI/CD
 - [ ] Setup Azure Key Vault til secrets
 - [ ] Lav simpelt statisk UI i endten React eller Blazor
