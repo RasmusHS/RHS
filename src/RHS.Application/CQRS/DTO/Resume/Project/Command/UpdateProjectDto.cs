@@ -6,7 +6,7 @@ namespace RHS.Application.CQRS.DTO.Resume.Project.Command;
 
 public record UpdateProjectDto : DtoBase
 {
-    public UpdateProjectDto(ProjectId id, ResumeId resumeId, string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured, DateTime created, DateTime lastModified)
+    public UpdateProjectDto(Guid id, Guid resumeId, string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured, DateTime created, DateTime lastModified)
     {
         Id = id;
         ResumeId = resumeId;
@@ -23,8 +23,8 @@ public record UpdateProjectDto : DtoBase
     
     public UpdateProjectDto() { }
     
-    public ProjectId Id { get; set; }
-    public ResumeId ResumeId { get; set; }
+    public Guid Id { get; set; } // Project Id
+    public Guid ResumeId { get; set; }
     public string ProjectTitle { get; set; }
     public string Description { get; set; }
     public string ProjectUrl { get; set; }

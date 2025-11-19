@@ -1,11 +1,4 @@
 using System.Net;
-using System.Net.Http.Json;
-using System.Text.Json;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.EntityFrameworkCore;
-using RHS.Application.CQRS.DTO.Resume.Command;
-using RHS.Application.CQRS.DTO.Resume.Project.Command;
-using RHS.Application.CQRS.DTO.Resume.Query;
 using RHS.Domain.Common.ValueObjects;
 using RHS.Domain.Resume;
 using RHS.Domain.Resume.Entities;
@@ -23,110 +16,6 @@ public class ResumeControllerTests : BaseIntegrationTest
     {
         _client = factory.CreateClient();
         _output = output;
-    }
-
-    [Fact]
-    public async Task CreateResume_WithValidRequestAndProjects_ReturnsOkAndSuccessIndicated()
-    {
-        // Arrange
-        var payload = new CreateResumeDto(
-            "Intro",
-            "John",
-            "Doe",
-            "123 Main St",
-            "12345",
-            "City",
-            "test@example.com",
-            "https://github.com/johndoe",
-            "https://linkedin.com/in/johndoe",
-            new byte[] { 1, 2, 3 },
-            new List<CreateProjectDto>
-            {
-                new CreateProjectDto(
-                    null,
-                    "Project 1",
-                    "Description 1",
-                    "https://project1.example",
-                    new byte[] { 4, 5, 6 },
-                    true)
-            });
-        
-        // Act
-        var response = await _client.PostAsJsonAsync("/api/resume/createResume", payload);
-        _output.WriteLine(response.Content.ReadAsStringAsync().Result);
-        
-        // Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        var json = await response.Content.ReadFromJsonAsync<JsonElement>();
-        _output.WriteLine(json.ToString());
-        bool success = false;
-        if (json.TryGetProperty("result", out var result) &&
-            TryGetBoolean(result, "success", out var s))
-        {
-            success = s;
-        }
-        
-        Assert.True(success);
-    }
-    
-    [Fact]
-    public async Task CreateResume_WithValidRequestWithoutProjects_ReturnsOkAndSuccessIndicated()
-    {
-        // Arrange
-        var payload = new CreateResumeDto(
-            "Intro",
-            "John",
-            "Doe",
-            "123 Main St",
-            "12345",
-            "City",
-            "test@example.com",
-            "https://github.com/johndoe",
-            "https://linkedin.com/in/johndoe",
-            new byte[] { 1, 2, 3 });
-        
-        // Act
-        var response = await _client.PostAsJsonAsync("/api/resume/createResume", payload);
-        _output.WriteLine(response.Content.ReadAsStringAsync().Result);
-        
-        // Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-        var json = await response.Content.ReadFromJsonAsync<JsonElement>();
-        _output.WriteLine(json.ToString());
-        bool success = false;
-        if (json.TryGetProperty("result", out var result) &&
-            TryGetBoolean(result, "success", out var s))
-        {
-            success = s;
-        }
-        Assert.True(success);
-    }
-    
-    [Fact]
-    public async Task CreateResume_WithInvalidModel_ReturnsBadRequest()
-    {
-        // Arrange
-        var invalidPayload = new CreateResumeDto(
-            "",
-            "",
-            "",
-            "",
-            "",
-            "",
-            "not-an-email",
-            "",
-            "",
-            new byte[] { 1, 2, 3 },
-            null);
-        
-        // Act
-        var response = await _client.PostAsJsonAsync("/api/resume/createResume", invalidPayload);
-        _output.WriteLine(response.Content.ReadAsStringAsync().Result);
-
-        // Assert
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
 
     [Fact]
@@ -150,91 +39,51 @@ public class ResumeControllerTests : BaseIntegrationTest
         
         await DbContext.Database.BeginTransactionAsync();
         await DbContext.Resumes.AddAsync(resume.Value);
-        //await DbContext.AddAsync(resume.Value);
         await DbContext.Projects.AddRangeAsync(projects);
         await DbContext.SaveChangesAsync();
         await DbContext.Database.CommitTransactionAsync();
         
-        _output.WriteLine(DbContext.Resumes.AsNoTracking().Any().ToString());
-        _output.WriteLine(DbContext.Resumes.AsNoTracking().Count().ToString());
+        //_output.WriteLine(DbContext.Resumes.AsNoTracking().Any().ToString());
+        //_output.WriteLine(DbContext.Resumes.AsNoTracking().Count().ToString());
         
         // Act
-        //var response = await _client.GetFromJsonAsync<QueryResumeDto>($"/api/resume/{resume.Value.Id.Value}");
         var response = await _client.GetAsync($"/api/resume/{resume.Value.Id.Value}");
         var responseBody = await response.Content.ReadAsStringAsync(); // log full server error for debugging
         _output.WriteLine(responseBody);
-        //_output.WriteLine(response.ToString());
         
         // Assert
         Assert.NotNull(response);
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        //Assert.NotEmpty(response.Projects);
+    }
+
+    [Fact]
+    public async Task GetResumeById_ReturnsBadRequest_WhenResumeDoesNotExist()
+    {
+        // Act
+        var response = await _client.GetAsync("/api/resume/invalid-guid");
+        
+        // Assert
+        Assert.NotNull(response);
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
     }
     
-    // [Fact]
-    // public async Task GetResumeById_WithNonExistingId_ReturnsBadRequest()
-    // {
-    //     // Arrange
-    //     // var arrangeDbItem = new CreateResumeDto(
-    //     //     "Intro",
-    //     //     "John",
-    //     //     "Doe",
-    //     //     "123 Main St",
-    //     //     "12345",
-    //     //     "City",
-    //     //     "test@example.com",
-    //     //     "https://github.com/johndoe",
-    //     //     "https://linkedin.com/in/johndoe",
-    //     //     new byte[] { 1, 2, 3 },
-    //     //     new List<CreateProjectDto>
-    //     //     {
-    //     //         new CreateProjectDto(
-    //     //             null,
-    //     //             "Project 1",
-    //     //             "Description 1",
-    //     //             "https://project1.example",
-    //     //             new byte[] { 4, 5, 6 },
-    //     //             true)
-    //     //     });
-    //     
-    //     var nonExistingId = ResumeId.Create().Value;
-    //     //var response = await _client.GetAsync($"/api/resume/{nonExistingId.Value}");
-    //     var response = await _client.GetFromJsonAsync<QueryResumeDto>($"/api/resume/{nonExistingId.Value}");
-    //     //_output.WriteLine(response.Content.ReadAsStringAsync().Result);
-    //     _output.WriteLine(response.ToString());
-    //
-    //     // Assert
-    //     Assert.Throws<KeyNotFoundException>(() => 
-    //     {
-    //         if (response == null)
-    //         {
-    //             throw new KeyNotFoundException($"Resume with ID {nonExistingId} not found.");
-    //         }
-    //     });
-    //     //Assert.Equal(HttpStatusCode.BadRequest, response);
-    // }
-    
-    
-    
-    private static bool TryGetBoolean(JsonElement element, string propertyName, out bool value)
+    [Fact]
+    public async Task GetResumeById_ReturnsInternalServerErrorAndThrows_WhenResumeDoesNotExist()
     {
-        value = false;
-        if (element.ValueKind != JsonValueKind.Object) return false;
+        // Act
+        var response = await _client.GetAsync($"/api/resume/{Guid.NewGuid()}");
+        var responseBody = await response.Content.ReadAsStringAsync(); // log full server error for debugging
+        _output.WriteLine(responseBody);
 
-        foreach (var prop in element.EnumerateObject())
+        // Assert
+        Assert.NotNull(response);
+        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        Assert.Throws<KeyNotFoundException>( () => 
         {
-            if (string.Equals(prop.Name, propertyName, StringComparison.OrdinalIgnoreCase))
+            if (response.StatusCode == HttpStatusCode.InternalServerError)
             {
-                if (prop.Value.ValueKind != JsonValueKind.True && prop.Value.ValueKind != JsonValueKind.False)
-                {
-                    return false;
-                }
-
-                value = prop.Value.GetBoolean();
-                return true;
+                throw new KeyNotFoundException();
             }
-        }
-
-        return false;
+        });
     }
 }

@@ -1,4 +1,5 @@
-﻿using RHS.Application.CQRS.DTO.Resume.Project.Query;
+﻿using EnsureThat;
+using RHS.Application.CQRS.DTO.Resume.Project.Query;
 using RHS.Application.Data;
 using RHS.Domain.Resume.ValueObjects;
 
@@ -8,6 +9,7 @@ public class GetAllProjectsQuery : IQuery<CollectionResponseBase<QueryProjectDto
 {
     public GetAllProjectsQuery(ResumeId resumeId)
     {
+        Ensure.That(resumeId, nameof(resumeId)).IsNotNull();
         ResumeId = resumeId;
     }
 

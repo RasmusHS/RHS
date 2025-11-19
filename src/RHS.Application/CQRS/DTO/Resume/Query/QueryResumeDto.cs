@@ -13,6 +13,9 @@ public record QueryResumeDto : DtoBase
         Introduction = introduction;
         FirstName = firstName;
         LastName = lastName;
+        Street = street;
+        ZipCode = zipCode;
+        City = city;
         Email = email;
         GitHubLink = gitHubLink;
         LinkedInLink = linkedInLink;

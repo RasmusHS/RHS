@@ -26,7 +26,6 @@ public class UpdateProjectCommandHandler : ICommandHandler<UpdateProjectCommand>
             command.IsFeatured);
         
         await _projectRepository.UpdateAsync(projectResult, cancellationToken);
-        _projectRepository.Save(cancellationToken);
         
         return Result.Ok();
     }

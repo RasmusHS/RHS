@@ -15,6 +15,11 @@ public sealed class ProjectId : ValueObject
     {
         return Result.Ok<ProjectId>(new ProjectId(Guid.NewGuid()));
     }
+
+    public static Result<ProjectId> GetExisting(Guid value)
+    {
+        return Result.Ok<ProjectId>(new ProjectId(value));
+    }
     
     protected override IEnumerable<object> GetEqualityComponents()
     {

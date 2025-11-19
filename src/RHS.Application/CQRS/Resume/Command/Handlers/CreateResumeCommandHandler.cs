@@ -76,7 +76,6 @@ public class CreateResumeCommandHandler : ICommandHandler<CreateResumeCommand>
             await _resumeRepository.AddAsync(resumeResult.Value, cancellationToken);
         }
         
-        _resumeRepository.Save(cancellationToken);
         return Result.Ok();
     }
 }

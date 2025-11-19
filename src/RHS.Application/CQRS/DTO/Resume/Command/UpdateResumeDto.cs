@@ -6,7 +6,7 @@ namespace RHS.Application.CQRS.DTO.Resume.Command;
 
 public record UpdateResumeDto : DtoBase
 {
-    public UpdateResumeDto(ResumeId id, string introduction, string firstName, string lastName, 
+    public UpdateResumeDto(Guid id, string introduction, string firstName, string lastName, 
         string street, string zipCode, string city, 
         string email, string gitHubLink, string linkedInLink, byte[] photo, DateTime created, DateTime lastModified)
     {
@@ -29,7 +29,7 @@ public record UpdateResumeDto : DtoBase
     
     public UpdateResumeDto() { }
     
-    public ResumeId Id { get; set; }
+    public Guid Id { get; set; } // Resume Id
     public string Introduction { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -54,6 +54,8 @@ public record UpdateResumeDto : DtoBase
             RuleFor(x => x.City).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(City)).Code);
             RuleFor(x => x.Email).NotNull().NotEmpty().WithMessage(Errors.General.ValueIsRequired(nameof(Email)).Code);
             RuleFor(x => x.Photo).NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(Photo)).Code);
+            RuleFor(x => x.Created).NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(Created)).Code);
+            RuleFor(x => x.LastModified).NotNull().WithMessage(Errors.General.ValueIsRequired(nameof(LastModified)).Code);
         }
     }
 }

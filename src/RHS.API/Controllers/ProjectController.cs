@@ -26,7 +26,7 @@ public class ProjectController : BaseController
         var result = await validator.ValidateAsync(request);
 
         CreateProjectCommand command = new CreateProjectCommand(
-            request.ResumeId,
+            ResumeId.GetExisting(request.ResumeId!.Value).Value, 
             request.ProjectTitle,
             request.Description,
             request.ProjectUrl,
@@ -43,9 +43,9 @@ public class ProjectController : BaseController
     
     [HttpGet]
     [Route("getProject/{projectId}")]
-    public async Task<IActionResult> GetProject(ProjectId projectId)
+    public async Task<IActionResult> GetProject(Guid projectId)
     {
-        var result = await _dispatcher.Dispatch(new GetProjectQuery(projectId));
+        var result = await _dispatcher.Dispatch(new GetProjectQuery(ProjectId.GetExisting(projectId).Value)) ?? throw new KeyNotFoundException($"Project with ID {projectId} not found.");
         if (result.Success)
         {
             return Ok(result.Value);
@@ -55,10 +55,9 @@ public class ProjectController : BaseController
     
     [HttpGet]
     [Route("{resumeId}")]
-    public async Task<IActionResult> GetProjectsByResumeId(ResumeId resumeId)
+    public async Task<IActionResult> GetProjectsByResumeId(Guid resumeId)
     {
-        GetAllProjectsQuery query = new GetAllProjectsQuery(resumeId);
-        var result = await _dispatcher.Dispatch(query);
+        var result = await _dispatcher.Dispatch(new GetAllProjectsQuery(ResumeId.GetExisting(resumeId).Value)) ?? throw new KeyNotFoundException($"Projects for Resume ID {resumeId} not found.");
         if (result.Success)
         {
             return Ok(result.Value);
@@ -75,8 +74,8 @@ public class ProjectController : BaseController
         if (result.IsValid)
         {
             UpdateProjectCommand command = new UpdateProjectCommand(
-                request.Id,
-                request.ResumeId,
+                ProjectId.GetExisting(request.Id).Value, 
+                ResumeId.GetExisting(request.ResumeId).Value, 
                 request.ProjectTitle,
                 request.Description,
                 request.ProjectUrl,
@@ -96,14 +95,14 @@ public class ProjectController : BaseController
     }
 
     [HttpDelete]
-    [Route("deleteProject/{projectId}")]
+    [Route("deleteProject")]
     public async Task<IActionResult> DeleteProject(DeleteProjectDto request)
     {
         DeleteProjectDto.Validator validator = new DeleteProjectDto.Validator();
         var result = await validator.ValidateAsync(request);
         if (result.IsValid)
         {
-            DeleteProjectCommand command = new DeleteProjectCommand(request.Id);
+            DeleteProjectCommand command = new DeleteProjectCommand(ProjectId.GetExisting(request.Id).Value);
             var commandResult = await _dispatcher.Dispatch(command);
             if (commandResult.Success)
             {

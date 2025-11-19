@@ -12,7 +12,7 @@ public class ProjectConfig : IEntityTypeConfiguration<ProjectEntity>
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id).HasConversion(
             id => id.Value,
-            value => ProjectId.Create().Value!);
+            value => ProjectId.GetExisting(value).Value!);
         
         builder.HasOne(p => p.ResumeEntity)
             .WithMany(r => r.Projects)

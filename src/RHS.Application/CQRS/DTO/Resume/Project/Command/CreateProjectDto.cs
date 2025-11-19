@@ -6,7 +6,7 @@ namespace RHS.Application.CQRS.DTO.Resume.Project.Command;
 
 public record CreateProjectDto
 {
-    public CreateProjectDto(ResumeId? resumeId, string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured)
+    public CreateProjectDto(Guid? resumeId, string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured)
     {
         ResumeId = resumeId;
         
@@ -19,7 +19,7 @@ public record CreateProjectDto
 
     public CreateProjectDto() { }
     
-    public ResumeId? ResumeId { get; set; }
+    public Guid? ResumeId { get; set; }
     public string ProjectTitle { get; set; }
     public string Description { get; set; }
     public string ProjectUrl { get; set; }

@@ -33,7 +33,6 @@ public class UpdateResumeCommandHandler : ICommandHandler<UpdateResumeCommand>
         
         await _resumeRepository.UpdateAsync(resumeResult, cancellationToken);
         
-        _resumeRepository.Save(cancellationToken);
         return Result.Ok();
     }
 }

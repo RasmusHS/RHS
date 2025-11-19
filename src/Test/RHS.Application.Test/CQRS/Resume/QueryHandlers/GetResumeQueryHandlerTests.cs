@@ -34,16 +34,14 @@ public class GetResumeQueryHandlerTests
             ProjectEntity.Create(resume.Value.Id, "Project 1", "Description 1", "https://project1.com", new byte[] { 4, 5, 6 }, true).Value,
             ProjectEntity.Create(resume.Value.Id, "Project 2", "Description 2", "https://project2.com", new byte[] { 7, 8, 9 }, true).Value
         };
+        resume.Value.AddRangeProjects(projects);
         
         var query = new GetResumeQuery(resume.Value.Id);
 
         var resumeRepositoryMock = new Mock<IResumeRepository>();
         resumeRepositoryMock.Setup(repo => repo.GetByIdIncludeProjectsAsync(query.Id)).ReturnsAsync(resume.Value);
 
-        var projectRepositoryMock = new Mock<IProjectRepository>();
-        projectRepositoryMock.Setup(repo => repo.GetAllByResumeIdAsync(query.Id)).ReturnsAsync(projects);
-
-        var handler = new GetResumeQueryHandler(resumeRepositoryMock.Object, projectRepositoryMock.Object);
+        var handler = new GetResumeQueryHandler(resumeRepositoryMock.Object);
         
         // Act
         var result = await handler.Handle(query);
@@ -64,42 +62,7 @@ public class GetResumeQueryHandlerTests
         var resumeRepositoryMock = new Mock<IResumeRepository>();
         resumeRepositoryMock.Setup(repo => repo.GetByIdIncludeProjectsAsync(query.Id)).ReturnsAsync((ResumeEntity)null);
 
-        var projectRepositoryMock = new Mock<IProjectRepository>();
-
-        var handler = new GetResumeQueryHandler(resumeRepositoryMock.Object, projectRepositoryMock.Object);
-        
-        // Act & Assert
-        await Assert.ThrowsAsync<KeyNotFoundException>(() => handler.Handle(query));
-    }
-    
-    [Fact]
-    public async Task Handle_ThrowsKeyNotFoundException_WhenProjectsAreNotFound()
-    {
-        // Arrange
-        var resume = ResumeEntity.Create(
-            "Intro",
-            FullName.Create("John", "Doe").Value,
-            Address.Create("123 St", "12345", "City").Value,
-            Email.Create("test@example.com").Value,
-            "https://github.com/johndoe",
-            "https://linkedin.com/in/johndoe",
-            new byte[] { 1, 2, 3 });
-
-        var projects = new List<ProjectEntity>
-        {
-            ProjectEntity.Create(resume.Value.Id, "Project 1", "Description 1", "https://project1.com", new byte[] { 4, 5, 6 }, true).Value,
-            ProjectEntity.Create(resume.Value.Id, "Project 2", "Description 2", "https://project2.com", new byte[] { 7, 8, 9 }, true).Value
-        };
-        
-        var query = new GetResumeQuery(ResumeId.Create().Value);
-
-        var resumeRepositoryMock = new Mock<IResumeRepository>();
-        resumeRepositoryMock.Setup(repo => repo.GetByIdIncludeProjectsAsync(query.Id)).ReturnsAsync(resume.Value);
-
-        var projectRepositoryMock = new Mock<IProjectRepository>();
-        projectRepositoryMock.Setup(repo => repo.GetAllByResumeIdAsync(query.Id)).ReturnsAsync((List<ProjectEntity>)null);
-
-        var handler = new GetResumeQueryHandler(resumeRepositoryMock.Object, projectRepositoryMock.Object);
+        var handler = new GetResumeQueryHandler(resumeRepositoryMock.Object);
         
         // Act & Assert
         await Assert.ThrowsAsync<KeyNotFoundException>(() => handler.Handle(query));

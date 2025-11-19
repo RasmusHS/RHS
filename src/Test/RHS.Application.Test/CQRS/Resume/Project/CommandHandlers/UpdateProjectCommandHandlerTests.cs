@@ -41,7 +41,6 @@ public class UpdateProjectCommandHandlerTests
         // Assert
         Assert.True(result.Success);
         projectRepositoryMock.Verify(repo => repo.UpdateAsync(It.IsAny<ProjectEntity>(), It.IsAny<CancellationToken>()), Times.Once);
-        projectRepositoryMock.Verify(repo => repo.Save(It.IsAny<CancellationToken>()), Times.Once);
     }
     
     [Fact]

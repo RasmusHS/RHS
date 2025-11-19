@@ -30,6 +30,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "LocalDevStuff", "LocalDevStuff", "{DC888F96-2442-421C-AA6A-F25D8B6BB0E2}"
 	ProjectSection(SolutionItems) = preProject
 		DockerCommands.md = DockerCommands.md
+		ManualAPIEndpointTesting.md = ManualAPIEndpointTesting.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RHS.API.IntegrationTests", "src\Test\RHS.API.IntegrationTests\RHS.API.IntegrationTests.csproj", "{00A3726A-15B4-450C-80BD-3F8F863A06F5}"

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RHS.Application.CQRS.DTO.Resume.Command;
-using RHS.Application.CQRS.DTO.Resume.Project.Command;
 using RHS.Application.CQRS.Resume.Command;
 using RHS.Application.CQRS.Resume.Project.Command;
 using RHS.Application.CQRS.Resume.Query;
@@ -44,7 +43,7 @@ public class ResumeController : BaseController
                     request.LinkedInLink,
                     request.Photo,
                     request.Projects!.Select(p => new CreateProjectCommand(
-                        p.ResumeId,
+                        ResumeId.GetExisting(p.ResumeId!.Value).Value, 
                         p.ProjectTitle,
                         p.Description,
                         p.ProjectUrl,
@@ -96,6 +95,7 @@ public class ResumeController : BaseController
     }
 
     [HttpPut]
+    [Route("updateResume")]
     public async Task<IActionResult> UpdateResume(UpdateResumeDto request)
     {
         UpdateResumeDto.Validator validator = new UpdateResumeDto.Validator();
@@ -103,7 +103,7 @@ public class ResumeController : BaseController
         if (result.IsValid)
         {
             UpdateResumeCommand command = new UpdateResumeCommand(
-                request.Id,
+                ResumeId.GetExisting(request.Id).Value,
                 request.Introduction,
                 request.FirstName,
                 request.LastName,

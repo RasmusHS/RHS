@@ -22,6 +22,7 @@ public class ProjectRepository : IProjectRepository
         
         await _dbContext.Projects.AddAsync(entity, cancellationToken);
         await _dbContext.Database.CommitTransactionAsync(cancellationToken);
+        Save(cancellationToken);
         
         return await Task.FromResult((ProjectEntity)entity);
     }
@@ -32,6 +33,7 @@ public class ProjectRepository : IProjectRepository
         
         await _dbContext.Projects.AddRangeAsync(entities, cancellationToken);
         await _dbContext.Database.CommitTransactionAsync(cancellationToken);
+        Save(cancellationToken);
         
         return await Task.FromResult((IEnumerable<ProjectEntity>)entities);
     }
@@ -50,8 +52,12 @@ public class ProjectRepository : IProjectRepository
         await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
         var result = await _dbContext.Projects.AsNoTracking()
             .Where(p => p.ResumeId == (ResumeId)resumeId)
-            .ToListAsync();
+            .ToListAsync() ?? throw new KeyNotFoundException($"Projects for Resume ID {resumeId} not found.");
         await _dbContext.Database.CommitTransactionAsync();
+        if (result.Count() < 1)
+        {
+            throw new KeyNotFoundException($"Projects for Resume ID {resumeId} not found.");
+        }
         
         return result;
     }
@@ -61,6 +67,7 @@ public class ProjectRepository : IProjectRepository
         _dbContext.Projects.Attach(entity);
         await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead, cancellationToken);
         _dbContext.Projects.Update(entity);
+        Save(cancellationToken);
         await _dbContext.Database.CommitTransactionAsync(cancellationToken);
     }
 
@@ -69,6 +76,7 @@ public class ProjectRepository : IProjectRepository
         await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead, cancellationToken);
         var entity = await _dbContext.Projects.FindAsync(id) ?? throw new KeyNotFoundException($"Project with ID {id} not found.");
         _dbContext.Projects.Remove(entity);
+        Save(cancellationToken);
         await _dbContext.Database.CommitTransactionAsync(cancellationToken);
     }
     

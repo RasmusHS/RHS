@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RHS.Persistence;
 
@@ -24,7 +23,5 @@ public abstract class BaseIntegrationTest : IClassFixture<RHSWebApplicationFacto
     {
         _scope?.Dispose();
         DbContext?.Dispose();
-        //DbContext.Projects.ExecuteDelete();
-        //DbContext.Resumes.ExecuteDelete();
     }
 }
