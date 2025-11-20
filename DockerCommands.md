@@ -3,3 +3,5 @@ For running a local instance of PostgreSQL in Docker, use the following command:
 
 For running the whole application stack with Docker Compose, use:
  - docker compose up
+
+dotnet ef database update --connection "Server=tcp:rhsweb.database.windows.net,1433;Initial Catalog=rhs_prod;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;Authentication='Active Directory Default';" --project ./src/RHS.API/RHS.API.csproj

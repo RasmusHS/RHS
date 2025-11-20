@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RHS.Application.CQRS.DTO.Resume.Command;
 using RHS.Application.CQRS.Resume.Command;
 using RHS.Application.CQRS.Resume.Project.Command;
@@ -19,6 +20,7 @@ public class ResumeController : BaseController
         _dispatcher = dispatcher;
     }
     
+    [Authorize]
     [HttpPost]
     [Route("createResume")]
     public async Task<IActionResult> CreateResume(CreateResumeDto request)
@@ -94,6 +96,7 @@ public class ResumeController : BaseController
         return BadRequest(result.Error.Code);
     }
 
+    [Authorize]
     [HttpPut]
     [Route("updateResume")]
     public async Task<IActionResult> UpdateResume(UpdateResumeDto request)

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RHS.Application.CQRS.DTO.Resume.Project.Command;
 using RHS.Application.CQRS.Resume.Project.Command;
 using RHS.Application.CQRS.Resume.Project.Query;
@@ -18,6 +19,7 @@ public class ProjectController : BaseController
         _dispatcher = dispatcher;
     }
 
+    [Authorize]
     [HttpPost]
     [Route("createProject")]
     public async Task<IActionResult> CreateProject(CreateProjectDto request)
@@ -65,6 +67,7 @@ public class ProjectController : BaseController
         return BadRequest(result.Error.Code);
     }
 
+    [Authorize]
     [HttpPut]
     [Route("updateProject")]
     public async Task<IActionResult> UpdateProject(UpdateProjectDto request)
@@ -94,6 +97,7 @@ public class ProjectController : BaseController
         return BadRequest(result.Errors);
     }
 
+    [Authorize]
     [HttpDelete]
     [Route("deleteProject")]
     public async Task<IActionResult> DeleteProject(DeleteProjectDto request)
