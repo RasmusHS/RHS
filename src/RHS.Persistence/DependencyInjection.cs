@@ -9,23 +9,25 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPersistence(
         this IServiceCollection services,
-        IConfiguration configuration,
-        bool isDevelopment)
+        IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            if (isDevelopment == false)
-            {
-                options
-                    .UseAzureSql(configuration.GetConnectionString("DefaultConnection"))
-                    .UseSnakeCaseNamingConvention();
-            }
-            else
-            {
-                options
-                    .UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
-                    .UseSnakeCaseNamingConvention();
-            }
+            // if (isDevelopment == false)
+            // {
+            //     options
+            //         .UseAzureSql(configuration.GetConnectionString("DefaultConnection"))
+            //         .UseSnakeCaseNamingConvention();
+            // }
+            // else
+            // {
+            //     options
+            //         .UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+            //         .UseSnakeCaseNamingConvention();
+            // }
+            options
+                .UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
+                .UseSnakeCaseNamingConvention();
         });
 
         services.AddScoped<IApplicationDbContext>(provider =>

@@ -4,18 +4,19 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RHS.Persistence;
-using Testcontainers.PostgreSql;
+using Testcontainers.MsSql;
 
 namespace RHS.API.IntegrationTests;
 
 public class RHSWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
-    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
-        .WithImage("postgres:latest")
+    private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
+        .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
         .WithName($"rhs_dev.db{Guid.NewGuid():N}") // unique per run
-        .WithDatabase("rhs_dev")
-        .WithUsername("rhs_dev")
-        .WithPassword("postgres")
+        //.WithDatabase("rhs_dev")
+        //.WithUsername("SA")
+        //.WithPortBinding(1433, 1433)
+        .WithPassword("yourStrong(!)Password")
         .WithCleanUp(true)
         .Build();
     
@@ -34,7 +35,7 @@ public class RHSWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLi
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options
-                    .UseNpgsql(_dbContainer.GetConnectionString())
+                    .UseSqlServer(_dbContainer.GetConnectionString())
                     .UseSnakeCaseNamingConvention();
             });
         });

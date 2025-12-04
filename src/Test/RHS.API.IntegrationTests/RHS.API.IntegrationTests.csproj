@@ -14,6 +14,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.22" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
         <PackageReference Include="Respawn" Version="6.2.1" />
+        <PackageReference Include="Testcontainers.MsSql" Version="4.9.0" />
         <PackageReference Include="Testcontainers.PostgreSql" Version="4.8.1" />
         <PackageReference Include="xunit" Version="2.5.3"/>
         <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3"/>
@@ -26,12 +27,6 @@
     <ItemGroup>
       <ProjectReference Include="..\..\RHS.API\RHS.API.csproj" />
       <ProjectReference Include="..\Helpers\Helpers.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="db_migration.sql">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
 
 </Project>
