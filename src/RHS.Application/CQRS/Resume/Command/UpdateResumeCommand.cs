@@ -9,7 +9,7 @@ public class UpdateResumeCommand : ICommand
     public UpdateResumeCommand(ResumeId id, string introduction, string firstName, string lastName, 
         string street, string zipCode, string city, 
         string email, string gitHubLink, string linkedInLink, 
-        byte[] photo, List<CreateProjectCommand>? projects)
+        byte[] photo, DateTime created, DateTime lastModified)
     {
         Id = id;
         Introduction = introduction;
@@ -22,7 +22,9 @@ public class UpdateResumeCommand : ICommand
         GitHubLink = gitHubLink;
         LinkedInLink = linkedInLink;
         Photo = photo;
-        Projects = projects;
+        
+        Created = created;
+        LastModified = lastModified;
     }
 
     public UpdateResumeCommand() { }
@@ -38,7 +40,6 @@ public class UpdateResumeCommand : ICommand
     public string GitHubLink { get; set; }
     public string LinkedInLink { get; set; }
     public byte[] Photo { get; set; }
-    public List<CreateProjectCommand>? Projects { get; set; }
     public DateTime Created { get; set; }
     public DateTime LastModified { get; set; }
 }

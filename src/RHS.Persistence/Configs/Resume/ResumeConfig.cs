@@ -13,7 +13,7 @@ public class ResumeConfig : IEntityTypeConfiguration<ResumeEntity>
         builder.HasKey(r => r.Id);
         builder.Property(r => r.Id).HasConversion(
             resume => resume.Value, 
-            value => ResumeId.Create().Value!);
+            value => ResumeId.GetExisting(value).Value!);
         
         // Properties
         builder.OwnsOne(r => r.FullName, propertyBuilder =>
@@ -35,7 +35,7 @@ public class ResumeConfig : IEntityTypeConfiguration<ResumeEntity>
         
         // One-to-many relationships
         builder.HasMany(r => r.Projects) // ProjectEntity
-            .WithOne()
+            .WithOne(p => p.ResumeEntity)
             .HasForeignKey(fk => fk.ResumeId);
     }
 }

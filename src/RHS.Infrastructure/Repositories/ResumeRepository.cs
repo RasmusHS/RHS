@@ -25,6 +25,7 @@ public class ResumeRepository : IResumeRepository
         {
             await _dbContext.Resumes.AddAsync(entity, cancellationToken);
             await _dbContext.Projects.AddRangeAsync(entity.Projects, cancellationToken);
+            Save(cancellationToken);
             
             await _dbContext.Database.CommitTransactionAsync(cancellationToken);
             
@@ -32,6 +33,7 @@ public class ResumeRepository : IResumeRepository
         }
         
         await _dbContext.Resumes.AddAsync(entity, cancellationToken);
+        Save(cancellationToken);
         
         await _dbContext.Database.CommitTransactionAsync(cancellationToken);
         
@@ -42,6 +44,7 @@ public class ResumeRepository : IResumeRepository
     {
         await _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
         await _dbContext.Resumes.AddRangeAsync(entities, cancellationToken);
+        Save(cancellationToken);
         await _dbContext.Database.CommitTransactionAsync(cancellationToken);
         
         return await Task.FromResult((IEnumerable<ResumeEntity>)entities);
@@ -59,10 +62,10 @@ public class ResumeRepository : IResumeRepository
     public async Task<ResumeEntity> GetByIdIncludeProjectsAsync(object id)
     {
         await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
-        var result = _dbContext.Resumes.AsNoTracking().Include(p => p.Projects).Where(p => p.Id == (ResumeId)id);
-        var resume = await result.FirstOrDefaultAsync() ?? throw new KeyNotFoundException($"Resume with ID {id} not found.");
+        var result = _dbContext.Resumes.AsNoTracking().Include(p => p.Projects).Where(p => p.Id == (ResumeId)id); 
+        var resume = await result.FirstOrDefaultAsync(); 
         await _dbContext.Database.CommitTransactionAsync();
-        return resume;
+        return resume!;
     }
     
     public async Task<IReadOnlyList<ResumeEntity>> GetAllAsync()
@@ -79,6 +82,7 @@ public class ResumeRepository : IResumeRepository
         _dbContext.Resumes.Attach(entity);
         await _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
         _dbContext.Resumes.Update(entity);
+        Save(cancellationToken);
         await _dbContext.Database.CommitTransactionAsync(cancellationToken);
     }
 
@@ -87,6 +91,7 @@ public class ResumeRepository : IResumeRepository
         await _dbContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead, cancellationToken);
         var entity = await _dbContext.Resumes.FindAsync(id, cancellationToken) ?? throw new KeyNotFoundException($"Resume with ID {id} not found.");
         _dbContext.Resumes.Remove(entity);
+        Save(cancellationToken);
         await _dbContext.Database.CommitTransactionAsync(cancellationToken);
     }
 

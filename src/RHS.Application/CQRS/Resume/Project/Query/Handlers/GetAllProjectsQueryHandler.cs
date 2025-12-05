@@ -18,6 +18,10 @@ public class GetAllProjectsQueryHandler : IQueryHandler<GetAllProjectsQuery, Col
     {
         List<QueryProjectDto> projects = new List<QueryProjectDto>();
         var projectsResult = await _projectRepository.GetAllByResumeIdAsync(query.ResumeId) ?? throw new KeyNotFoundException($"Projects for Resume ID {query.ResumeId} not found.");
+        if (projectsResult.Count() < 1)
+        {
+            throw new KeyNotFoundException($"Projects for Resume ID {query.ResumeId} not found.");
+        }
 
         foreach (var project in projectsResult)
         {

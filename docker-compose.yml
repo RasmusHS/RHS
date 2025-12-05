@@ -1,15 +1,14 @@
 services:
   rhs_dev.db:
-    image: postgres:latest
+    image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: rhs_dev.db
     environment:
-      - POSTGRES_DB=rhs_dev
-      - POSTGRES_USER=rhs_dev
-      - POSTGRES_PASSWORD=postgres
+      - ACCEPT_EULA: "Y"
+      - SA_PASSWORD: "yourStrong(!)Password"
     ports:
-      - "5432:5432"
+      - "1433:1433"
     volumes:
-      - ./.containers/db:/var/lib/postgresql/data
+      - ./.containers/db:/var/lib/mssql/data
 
   rhs.api:
     ports:
@@ -21,7 +20,7 @@ services:
       dockerfile: ./RHS.API/Dockerfile
     environment:
       - "ASPNETCORE_ENVIRONMENT": "Development"
-      - "ASPNETCORE_URLS": "https://+:443;http://+:80"
+      - "ASPNETCORE_URLS": "https://+:7258;http://+:5099"
       #- "ASPNETCORE_HTTP_PORT": "5099"
       - "ASPNETCORE_Kestrel__Certificates__Default__Password": "eeJD2puyfUyYYPXfQt"
       - "ASPNETCORE_Kestrel__Certificates__Default__Path": "/https/aspnetapp.pfx"

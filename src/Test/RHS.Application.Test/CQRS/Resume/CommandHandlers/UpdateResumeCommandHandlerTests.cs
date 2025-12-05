@@ -33,26 +33,16 @@ public class UpdateResumeCommandHandlerTests
             "https://github.com/johndoe",
             "https://linkedin.com/in/johndoe",
             new byte[] { 1, 2, 3 },
-            new List<CreateProjectCommand>
-            {
-                new CreateProjectCommand
-                (
-                    ResumeId.Create().Value,
-                    "Project 1",
-                    "Description 1",
-                    "https://project1.com",
-                    new byte[] { 4, 5, 6 },
-                    true
-                )
-            }
+            DateTime.Now, 
+            DateTime.Now
         );
 
         var resume = ResumeEntity.Create("Introduction", FullName.Create("Jane", "Doe").Value, Address.Create("456 Avenue", "67890", "City").Value, Email.Create("old@example.com").Value, "https://github.com/janedoe", "https://linkedin.com/in/janedoe", new byte[] { 7, 8, 9 }).Value;
         var resumeRepositoryMock = new Mock<IResumeRepository>();
-        var projectRepositoryMock = new Mock<IProjectRepository>();
+        //var projectRepositoryMock = new Mock<IProjectRepository>();
 
         resumeRepositoryMock.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(Result.Ok(resume).Value);
-        var handler = new UpdateResumeCommandHandler(resumeRepositoryMock.Object, projectRepositoryMock.Object);
+        var handler = new UpdateResumeCommandHandler(resumeRepositoryMock.Object);
         
         // Act
         var result = await handler.Handle(command);
@@ -60,8 +50,6 @@ public class UpdateResumeCommandHandlerTests
         // Assert
         Assert.True(result.Success);
         resumeRepositoryMock.Verify(r => r.UpdateAsync(It.IsAny<ResumeEntity>(), It.IsAny<CancellationToken>()), Times.Once);
-        projectRepositoryMock.Verify(p => p.AddRangeAsync(It.IsAny<List<ProjectEntity>>(), It.IsAny<CancellationToken>()), Times.Once);
-        projectRepositoryMock.Verify(p => p.Save(It.IsAny<CancellationToken>()), Times.Once);
     }
     
     [Fact]
@@ -81,24 +69,22 @@ public class UpdateResumeCommandHandlerTests
             "https://github.com/johndoe",
             "https://linkedin.com/in/johndoe",
             new byte[] { 1, 2, 3 },
-            new List<CreateProjectCommand>()
+            DateTime.Now, 
+            DateTime.Now
         );
 
         var resume = ResumeEntity.Create("Introduction", FullName.Create("Jane", "Doe").Value, Address.Create("456 Avenue", "67890", "City").Value, Email.Create("old@example.com").Value, "https://github.com/janedoe", "https://linkedin.com/in/janedoe", new byte[] { 7, 8, 9 }).Value;
         var resumeRepositoryMock = new Mock<IResumeRepository>();
-        var projectRepositoryMock = new Mock<IProjectRepository>();
 
         resumeRepositoryMock.Setup(r => r.GetByIdAsync(command.Id)).ReturnsAsync(Result.Ok(resume));
-        var handler = new UpdateResumeCommandHandler(resumeRepositoryMock.Object, projectRepositoryMock.Object);
+        var handler = new UpdateResumeCommandHandler(resumeRepositoryMock.Object);
         
         // Act
         var result = await handler.Handle(command);
         
         // Assert
         Assert.True(result.Success);
-        resumeRepositoryMock.Verify(r => r.UpdateAsync(It.IsAny<ResumeEntity>(), It.IsAny<CancellationToken>()), Times.Never);
-        projectRepositoryMock.Verify(p => p.AddRangeAsync(It.IsAny<List<ProjectEntity>>(), It.IsAny<CancellationToken>()), Times.Never);
-        resumeRepositoryMock.Verify(r => r.Save(It.IsAny<CancellationToken>()), Times.Once);
+        resumeRepositoryMock.Verify(r => r.UpdateAsync(It.IsAny<ResumeEntity>(), It.IsAny<CancellationToken>()), Times.Once);
     }
     
     [Fact]
@@ -117,7 +103,8 @@ public class UpdateResumeCommandHandlerTests
             "https://github.com/johndoe",
             "https://linkedin.com/in/johndoe",
             new byte[] { 1, 2, 3 },
-            new List<CreateProjectCommand>()
+            DateTime.Now, 
+            DateTime.Now
             );
 
         var resumeRepositoryMock = new Mock<IResumeRepository>();
@@ -125,7 +112,7 @@ public class UpdateResumeCommandHandlerTests
 
         var projectRepositoryMock = new Mock<IProjectRepository>();
 
-        var handler = new UpdateResumeCommandHandler(resumeRepositoryMock.Object, projectRepositoryMock.Object);
+        var handler = new UpdateResumeCommandHandler(resumeRepositoryMock.Object);
         
         // Act & Assert
         await Assert.ThrowsAsync<KeyNotFoundException>(() => handler.Handle(command));

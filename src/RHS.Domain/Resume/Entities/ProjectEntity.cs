@@ -18,8 +18,8 @@ public sealed class ProjectEntity : Entity<ProjectId>
         DemoGif = demoGif;
         IsFeatured = isFeatured;
         
-        Created = DateTime.Now;
-        LastModified = DateTime.Now;
+        Created = DateTime.UtcNow;
+        LastModified = DateTime.UtcNow;
     }
     
     public static Result<ProjectEntity> Create(ResumeId resumeId, string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured)
@@ -48,7 +48,7 @@ public sealed class ProjectEntity : Entity<ProjectId>
         DemoGif = demoGif;
         IsFeatured = isFeatured;
         
-        LastModified = DateTime.Now;
+        LastModified = DateTime.UtcNow;
     }
     
     public ResumeId ResumeId { get; private set; }

@@ -52,7 +52,6 @@ public class CreateResumeCommandHandlerTests
         // Assert
         Assert.True(result.Success);
         resumeRepositoryMock.Verify(r => r.AddAsync(It.IsAny<ResumeEntity>(), It.IsAny<CancellationToken>()), Times.Once);
-        resumeRepositoryMock.Verify(r => r.Save(It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact]
@@ -83,6 +82,5 @@ public class CreateResumeCommandHandlerTests
         // Assert
         Assert.True(result.Success);
         resumeRepositoryMock.Verify(r => r.AddAsync(It.IsAny<ResumeEntity>(), It.IsAny<CancellationToken>()), Times.Once);
-        resumeRepositoryMock.Verify(r => r.Save(It.IsAny<CancellationToken>()), Times.Once);
     }
 }

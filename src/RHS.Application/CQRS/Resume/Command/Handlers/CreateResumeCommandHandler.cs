@@ -30,7 +30,7 @@ public class CreateResumeCommandHandler : ICommandHandler<CreateResumeCommand>
         Result<Email> emailResult = Email.Create(command.Email);
         if (emailResult.Failure) return emailResult;
         
-        if (command.Projects.Any())
+        if (command.Projects != null)
         {
             Result<ResumeEntity> resumeResult = ResumeEntity.Create(
                 command.Introduction,
@@ -76,7 +76,6 @@ public class CreateResumeCommandHandler : ICommandHandler<CreateResumeCommand>
             await _resumeRepository.AddAsync(resumeResult.Value, cancellationToken);
         }
         
-        _resumeRepository.Save(cancellationToken);
         return Result.Ok();
     }
 }

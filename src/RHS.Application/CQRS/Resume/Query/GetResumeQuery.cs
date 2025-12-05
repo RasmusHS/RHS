@@ -5,7 +5,7 @@ using RHS.Domain.Resume.ValueObjects;
 
 namespace RHS.Application.CQRS.Resume.Query;
 
-public class GetResumeQuery : IQuery<QueryResumeDto>
+public record GetResumeQuery : IQuery<QueryResumeDto>
 {
     public GetResumeQuery(ResumeId id)
     {

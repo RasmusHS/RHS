@@ -13,14 +13,9 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.11" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="..\..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
     </ItemGroup>
 
     <ItemGroup>
@@ -28,5 +23,14 @@
       <ProjectReference Include="..\RHS.Infrastructure\RHS.Infrastructure.csproj" />
       <ProjectReference Include="..\RHS.Persistence\RHS.Persistence.csproj" />
     </ItemGroup>
-
+    
+    <ItemGroup>
+        <InternalsVisibleTo Include="RHS.API.IntegrationTests" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Content Include="..\..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
 </Project>
