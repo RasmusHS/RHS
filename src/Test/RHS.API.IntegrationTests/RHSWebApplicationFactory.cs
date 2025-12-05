@@ -12,10 +12,7 @@ public class RHSWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLi
 {
     private readonly MsSqlContainer _dbContainer = new MsSqlBuilder()
         .WithImage("mcr.microsoft.com/mssql/server:2022-latest")
-        .WithName($"rhs_dev.db{Guid.NewGuid():N}") // unique per run
-        //.WithDatabase("rhs_dev")
-        //.WithUsername("SA")
-        //.WithPortBinding(1433, 1433)
+        .WithName($"rhs_dev.db{Guid.NewGuid():N}") 
         .WithPassword("yourStrong(!)Password")
         .WithCleanUp(true)
         .Build();
@@ -40,14 +37,11 @@ public class RHSWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLi
             });
         });
     }
-
+    
     public Task InitializeAsync()
     {
         return _dbContainer.StartAsync();
     }
-
-    public new Task DisposeAsync()
-    {
-        return _dbContainer.DisposeAsync().AsTask();
-    }
+    
+    public new Task DisposeAsync() => Task.CompletedTask;
 }

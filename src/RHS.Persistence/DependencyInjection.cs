@@ -13,18 +13,6 @@ public static class DependencyInjection
     {
         services.AddDbContext<ApplicationDbContext>(options =>
         {
-            // if (isDevelopment == false)
-            // {
-            //     options
-            //         .UseAzureSql(configuration.GetConnectionString("DefaultConnection"))
-            //         .UseSnakeCaseNamingConvention();
-            // }
-            // else
-            // {
-            //     options
-            //         .UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
-            //         .UseSnakeCaseNamingConvention();
-            // }
             options
                 .UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
                 .UseSnakeCaseNamingConvention();
