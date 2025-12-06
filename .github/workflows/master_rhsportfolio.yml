@@ -29,7 +29,7 @@ jobs:
 
       - name: dotnet publish API
         #run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
-        run: dotnet publish ./src/RHS.API/RHS.API.csproj -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish ./src/RHS.API/RHS.API.csproj -c Release -o ./publish
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
