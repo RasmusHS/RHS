@@ -3,6 +3,7 @@ using RHS.Application;
 using RHS.Infrastructure;
 using RHS.Persistence;
 
+Console.WriteLine("API starting...");
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -36,6 +37,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+Console.WriteLine("API started successfully.");
 app.Run();
 
 public partial class Program { }
