@@ -9,6 +9,18 @@ on:
       - master
   workflow_dispatch:
 
+services:
+  rhs_dev.db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: rhs_dev.db
+    environment:
+      - ACCEPT_EULA: "Y"
+      - SA_PASSWORD: "yourStrong(!)Password"
+    ports:
+      - "1433:1433"
+    volumes:
+      - ./.containers/db:/var/lib/mssql/data
+
 env:
   AZURE_WEBAPP_NAME: 'RHSPortfolio' # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: './publish' # set this to the path of your web app project
@@ -16,6 +28,9 @@ env:
   SOLUTION_PATH: './RHS.sln'
   API_PROJECT_PATH: './src/RHS.API/RHS.API.csproj'
   PUBLISH_DIR: './publish'
+  TESTCONTAINERS_RYUK_DISABLED: true
+  TESTCONTAINERS_CHECKS_DISABLE: true
+  DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 1
   
 jobs:
   build-and-test:
@@ -29,7 +44,10 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
-          
+
+      - name: Docker Info (debug)
+        run: docker info
+                
       - name: Restore 
         run: dotnet restore ${{ env.SOLUTION_PATH }}
 
@@ -37,7 +55,9 @@ jobs:
         run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
         
       - name: Test
-        run: dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-restore --no-build --verbosity normal
+        
+        run: export TESTCONTAINERS_HOST_OVERRIDE=localhost
+        dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-restore --no-build --verbosity normal
 
       - name: Publish
         run: dotnet publish ${{ env.API_PROJECT_PATH }} --configuration Release --no-restore --no-build --property:PublishDir=${{ env.PUBLISH_DIR }}
