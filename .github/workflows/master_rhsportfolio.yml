@@ -55,7 +55,8 @@ jobs:
         run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
         
       - name: Test
-        run: export TESTCONTAINERS_HOST_OVERRIDE=localhost 
+        env:
+          TESTCONTAINERS_HOST_OVERRIDE: localhost
         run: dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-restore --no-build --verbosity normal
 
       - name: Publish
