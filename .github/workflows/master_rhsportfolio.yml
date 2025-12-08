@@ -50,5 +50,5 @@ jobs:
         with:
           app-name: 'RHSPortfolio'
           slot-name: 'Production'
-          package: ./publish
+          package: ./api-publish
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1A93FC1BAF044DE2A7863A631D00EAF3 }}
