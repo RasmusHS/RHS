@@ -28,7 +28,6 @@ jobs:
     services:
       rhs_dev.db:
         image: mcr.microsoft.com/mssql/server:2022-latest
-        container_name: rhs_dev.db
         ports:
           - 1433:1433
         volumes:
