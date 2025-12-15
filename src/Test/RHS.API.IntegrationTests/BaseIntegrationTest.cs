@@ -10,6 +10,8 @@ public abstract class BaseIntegrationTest : IClassFixture<RHSWebApplicationFacto
     private readonly IServiceScope _scope;
     protected readonly ISender Sender;
     protected readonly ApplicationDbContext DbContext;
+    //private static bool _databaseInitialized;
+    //private static readonly object _lock = new object();
 
     protected BaseIntegrationTest(RHSWebApplicationFactory factory)
     {
@@ -18,13 +20,29 @@ public abstract class BaseIntegrationTest : IClassFixture<RHSWebApplicationFacto
         Sender = _scope.ServiceProvider.GetRequiredService<ISender>();
 
         DbContext = _scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-        //if (DbContext.Database.GetPendingMigrations().Any())
-        //{
-            //DbContext.Database.Migrate();
-            //DbContext.Database.EnsureDeleted();
+        
         DbContext.Database.EnsureCreated();
+        // Only create database once for all tests
+        //lock (_lock)
+        //{
+        //    if (!_databaseInitialized)
+        //    {
+        //        DbContext.Database.EnsureCreated();
+        //        _databaseInitialized = true;
+        //    }
         //}
+        
+        // Clean data between tests instead of recreating database
+        //CleanDatabase();
+    }
+    
+    private void CleanDatabase()
+    {
+        // Remove all data but keep schema
+        DbContext.Projects.RemoveRange(DbContext.Projects);
+        DbContext.Resumes.RemoveRange(DbContext.Resumes);
+        // Add other entities...
+        DbContext.SaveChanges();
     }
     
     public void Dispose()
