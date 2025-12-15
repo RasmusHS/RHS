@@ -19,12 +19,12 @@ public abstract class BaseIntegrationTest : IClassFixture<RHSWebApplicationFacto
 
         DbContext = _scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-        if (DbContext.Database.GetPendingMigrations().Any())
-        {
+        //if (DbContext.Database.GetPendingMigrations().Any())
+        //{
             //DbContext.Database.Migrate();
             DbContext.Database.EnsureDeleted();
             DbContext.Database.EnsureCreated();
-        }
+        //}
     }
     
     public void Dispose()
