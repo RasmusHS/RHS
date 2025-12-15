@@ -28,6 +28,9 @@
 
     <ItemGroup>
       <None Include="SeedFiles\**" CopyToOutputDirectory="PreserveNewest" />
+      <None Update="Migrations\db_migration.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>
