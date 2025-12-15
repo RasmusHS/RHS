@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using RHS.Persistence;
 using Testcontainers.MsSql;
@@ -19,6 +20,8 @@ public class RHSWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLi
     
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.UseEnvironment("Testing");
+        
         builder.ConfigureTestServices(services =>
         {
             var descriptor = services
@@ -33,7 +36,9 @@ public class RHSWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLi
             {
                 options
                     .UseSqlServer(_dbContainer.GetConnectionString())
-                    .UseSnakeCaseNamingConvention();
+                    .UseSnakeCaseNamingConvention()
+                    .ConfigureWarnings(warnings => 
+                        warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
             });
         });
     }
