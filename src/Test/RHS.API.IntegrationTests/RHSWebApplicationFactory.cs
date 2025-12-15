@@ -35,7 +35,7 @@ public class RHSWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLi
             services.AddDbContext<ApplicationDbContext>(options =>
             {
                 options
-                    .UseSqlServer(_dbContainer.GetConnectionString())
+                    .UseSqlServer(_dbContainer.GetConnectionString() + ";Database=rhs_dev.db")
                     .UseSnakeCaseNamingConvention()
                     .ConfigureWarnings(warnings => 
                         warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
