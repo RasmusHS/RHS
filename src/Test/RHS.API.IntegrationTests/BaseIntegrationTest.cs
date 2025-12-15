@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RHS.Persistence;
 
@@ -17,6 +18,11 @@ public abstract class BaseIntegrationTest : IClassFixture<RHSWebApplicationFacto
         Sender = _scope.ServiceProvider.GetRequiredService<ISender>();
 
         DbContext = _scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        if (DbContext.Database.GetPendingMigrations().Any())
+        {
+            DbContext.Database.Migrate();
+        }
     }
     
     public void Dispose()

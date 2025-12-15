@@ -38,13 +38,13 @@ public class RHSWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLi
         });
     }
     
-    public async Task InitializeAsync()
+    public Task InitializeAsync()
     {
-        await _dbContainer.StartAsync();
+        return _dbContainer.StartAsync();
 
-        var migrationSql = await File.ReadAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Migrations", "db_migration.sql"));
+        //var migrationSql = await File.ReadAllTextAsync(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Migrations", "db_migration.sql"));
 
-        await _dbContainer.ExecScriptAsync(migrationSql);
+        //await _dbContainer.ExecScriptAsync(migrationSql);
     }
     
     public new Task DisposeAsync() => Task.CompletedTask;
