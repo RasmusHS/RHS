@@ -21,7 +21,9 @@ public abstract class BaseIntegrationTest : IClassFixture<RHSWebApplicationFacto
 
         if (DbContext.Database.GetPendingMigrations().Any())
         {
-            DbContext.Database.Migrate();
+            //DbContext.Database.Migrate();
+            DbContext.Database.EnsureDeleted();
+            DbContext.Database.EnsureCreated();
         }
     }
     
