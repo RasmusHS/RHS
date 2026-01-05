@@ -15,7 +15,7 @@ env:
   DOTNET_VERSION: '8.x'
   SOLUTION_PATH: './RHS.sln'
   API_PROJECT_PATH: './src/RHS.API/RHS.API.csproj'
-  PUBLISH_DIR: './publish'
+  PUBLISH_DIR: '${{ github.workspace }}/publish'
   TESTCONTAINERS_RYUK_DISABLED: true
   TESTCONTAINERS_CHECKS_DISABLE: true
   
