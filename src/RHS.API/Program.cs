@@ -29,6 +29,9 @@ if (app.Environment.IsDevelopment())
     app.ApplyMigrations(); // Automatically apply migrations at startup in development
 }
 
+// Register exception handling middleware
+app.UseMiddleware<ExceptionHandler>();
+
 app.UseHttpsRedirection();
 
 app.UseRouting();

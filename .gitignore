@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Ignore all .cs migration files 
+**/Migrations/*.cs
+
+# Include SQL scripts in the Migration folder
+!**/Migrations/*.sql
+
 # User-specific files
 *.rsuser
 *.suo
@@ -361,3 +367,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/src/RHS.Persistence/Migrations/ApplicationDbContextModelSnapshot.cs

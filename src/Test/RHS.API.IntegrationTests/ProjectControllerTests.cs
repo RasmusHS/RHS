@@ -60,13 +60,7 @@ public class ProjectControllerTests : BaseIntegrationTest
         // Assert
         Assert.NotNull(response);
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
-        Assert.Throws<KeyNotFoundException>( () => 
-        {
-            if (response.StatusCode == HttpStatusCode.InternalServerError)
-            {
-                throw new KeyNotFoundException();
-            }
-        });
+        Assert.Contains("not found", responseBody, StringComparison.OrdinalIgnoreCase);
     }
     
     [Fact]
@@ -124,18 +118,12 @@ public class ProjectControllerTests : BaseIntegrationTest
         
         // Act
         var response = await _client.GetAsync($"/api/project/{resume.Value.Id.Value}");
-        var responseBody = await response.Content.ReadAsStringAsync(); // log full server error for debugging
+        var responseBody = await response.Content.ReadAsStringAsync();
         _output.WriteLine(responseBody);
         
         // Assert
         Assert.NotNull(response);
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
-        Assert.Throws<KeyNotFoundException>( () => 
-        {
-            if (response.StatusCode == HttpStatusCode.InternalServerError)
-            {
-                throw new KeyNotFoundException();
-            }
-        });
+        Assert.Contains("not found", responseBody, StringComparison.OrdinalIgnoreCase);
     }
 }

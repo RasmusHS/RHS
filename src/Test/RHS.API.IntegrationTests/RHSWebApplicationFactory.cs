@@ -17,7 +17,11 @@ public class RHSWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLi
         .WithPassword("yourStrong(!)Password")
         .WithCleanUp(true)
         .Build();
-    
+
+    // Track if THIS factory's database has been initialized
+    private bool _databaseInitialized;
+    private readonly SemaphoreSlim _initLock = new(1, 1);
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Testing");
@@ -42,7 +46,27 @@ public class RHSWebApplicationFactory : WebApplicationFactory<Program>, IAsyncLi
             });
         });
     }
-    
+
+    public async Task EnsureDatabaseCreatedAsync(ApplicationDbContext context)
+    {
+        if (!_databaseInitialized)
+        {
+            await _initLock.WaitAsync();
+            try
+            {
+                if (!_databaseInitialized)
+                {
+                    await context.Database.EnsureCreatedAsync();
+                    _databaseInitialized = true;
+                }
+            }
+            finally
+            {
+                _initLock.Release();
+            }
+        }
+    }
+
     public Task InitializeAsync()
     {
         return _dbContainer.StartAsync();
