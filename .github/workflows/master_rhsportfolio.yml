@@ -49,6 +49,7 @@ jobs:
         
       - name: Test
         env:
+          ASPNETCORE_ENVIRONMENT: Testing
           TESTCONTAINERS_HOST_OVERRIDE: localhost
           DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: 0
         run: dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-restore --no-build --verbosity normal
