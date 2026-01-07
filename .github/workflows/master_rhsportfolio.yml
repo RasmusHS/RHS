@@ -10,12 +10,13 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: 'RHSPortfolio' # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: './publish' # set this to the path of your web app project
+  AZURE_WEBAPP_NAME: 'RHSPortfolio' 
+  #AZURE_WEBAPP_PACKAGE_PATH: './publish' 
   DOTNET_VERSION: '8.x'
   SOLUTION_PATH: './RHS.sln'
   API_PROJECT_PATH: './src/RHS.API/RHS.API.csproj'
-  PUBLISH_DIR: '${{ github.workspace }}/publish'
+  #PUBLISH_DIR: '${{ github.workspace }}/publish'
+  PUBLISH_DIR: 'publish'
   TESTCONTAINERS_RYUK_DISABLED: true
   TESTCONTAINERS_CHECKS_DISABLE: true
   
@@ -55,13 +56,13 @@ jobs:
         run: dotnet test ${{ env.SOLUTION_PATH }} --configuration Release --no-restore --no-build --verbosity normal
 
       - name: Publish
-        run: dotnet publish ${{ env.API_PROJECT_PATH }} --configuration Release --no-restore --no-build --property:PublishDir=${{ env.PUBLISH_DIR }}
+        run: dotnet publish ${{ env.API_PROJECT_PATH }} --configuration Release --no-restore --no-build --output ${{ github.workspace }}/${{ env.PUBLISH_DIR }} --no-dependencies
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: webapp
-          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          path: ${{ env.PUBLISH_DIR }}
 
   deploy:
     name: Deploy to Azure
@@ -73,11 +74,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: webapp
-          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          path: ${{ env.PUBLISH_DIR }}
 
       - name: Deploy
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          package: ${{ env.PUBLISH_DIR }}
