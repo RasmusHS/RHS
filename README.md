@@ -1,4 +1,4 @@
-Arbejder i øjeblikket i branch: API-Implementation
+Arbejder i øjeblikket i branch: master
 # Portfolio Hjemmeside/Website
 Dette portfolio projekt har 2 formål:
 1. Bruge som en mulighed for at lære nyt: Frontend (React eller Blazor), CI/CD og Azure
@@ -13,7 +13,7 @@ Nedenfor ses den seneste iteration af projektets ER mapping diagram:\
 - [x] Sæt docker compose op med lokal PostgreSQL db
 - [x] Undersøg og setup integrationstest
   - [x] Skriv tests til GET endpoints
-  - [ ] Merge API-Implementation ind til master
+  - [x] Merge API-Implementation ind til master
 - [x] Setup automatisk deployment til Azure op via GitHub Actions CI/CD
-- [ ] Setup Azure Key Vault til secrets
+- [x] Setup Azure Key Vault til secrets
 - [ ] Lav simpelt statisk UI i endten React eller Blazor
