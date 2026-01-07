@@ -1,4 +1,4 @@
-Arbejder i øjeblikket i branch: master\
+Arbejder i øjeblikket i branch: Frontend\
 Endpoint demo link: https://rhsportfolio.azurewebsites.net/api/resume/5ec199f0-4c26-4d20-bbdd-39ac844237b8
 # Portfolio Hjemmeside/Website
 Dette portfolio projekt har 2 formål:
