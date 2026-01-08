@@ -1,8 +1,8 @@
 ﻿using Helpers;
 using Moq;
+using RHS.Application.CQRS.Command.Project;
 using RHS.Application.CQRS.Resume.Command;
 using RHS.Application.CQRS.Resume.Command.Handlers;
-using RHS.Application.CQRS.Resume.Project.Command;
 using RHS.Application.Data.Infrastructure;
 using RHS.Domain.Resume;
 using RHS.Domain.Resume.ValueObjects;

@@ -1,15 +1,17 @@
-﻿using RHS.Application.CQRS.DTO.Project.Query;
+﻿using RHS.Application.CQRS.Resume.Project.Command;
+using RHS.Application.Data;
 using RHS.Domain.Resume.ValueObjects;
 
-namespace RHS.Application.CQRS.DTO.Resume.Query;
+namespace RHS.Application.CQRS.Command.Resume;
 
-public record QueryResumeDto 
+public class UpdateResumeCommand : ICommand
 {
-    public QueryResumeDto(Guid id, string introduction, string firstName, string lastName, string street, string zipCode, string city, string email, 
-        string gitHubLink, string linkedInLink, byte[] photo, List<QueryProjectDto> projects, DateTime created, DateTime lastModified)
+    public UpdateResumeCommand(ResumeId id, string introduction, string firstName, string lastName, 
+        string street, string zipCode, string city, 
+        string email, string gitHubLink, string linkedInLink, 
+        byte[] photo, DateTime created, DateTime lastModified)
     {
         Id = id;
-        
         Introduction = introduction;
         FirstName = firstName;
         LastName = lastName;
@@ -21,15 +23,13 @@ public record QueryResumeDto
         LinkedInLink = linkedInLink;
         Photo = photo;
         
-        Projects = projects;
-        
         Created = created;
         LastModified = lastModified;
     }
 
-    public QueryResumeDto() { }
+    public UpdateResumeCommand() { }
     
-    public Guid Id { get; set; }
+    public ResumeId Id { get; set; }
     public string Introduction { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -40,7 +40,6 @@ public record QueryResumeDto
     public string GitHubLink { get; set; }
     public string LinkedInLink { get; set; }
     public byte[] Photo { get; set; }
-    public List<QueryProjectDto> Projects { get; set; }
-    public DateTime Created { get; protected set; }
-    public DateTime LastModified { get; protected set; }
+    public DateTime Created { get; set; }
+    public DateTime LastModified { get; set; }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using FluentValidation;
-using RHS.Application.CQRS.DTO.Resume.Project.Command;
+using RHS.Application.CQRS.DTO.Project.Command;
 using RHS.Domain.Common;
 
 namespace RHS.Application.CQRS.DTO.Resume.Command;

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RHS.Application.CQRS.Command.Project;
+using RHS.Application.CQRS.Command.Resume;
 using RHS.Application.CQRS.DTO.Resume.Command;
-using RHS.Application.CQRS.Resume.Command;
-using RHS.Application.CQRS.Resume.Project.Command;
-using RHS.Application.CQRS.Resume.Query;
+using RHS.Application.CQRS.Query.Resume;
 using RHS.Application.Data;
 using RHS.Domain.Resume.ValueObjects;
 

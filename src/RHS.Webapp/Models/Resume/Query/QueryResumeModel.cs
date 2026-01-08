@@ -1,15 +1,14 @@
-﻿using RHS.Application.CQRS.DTO.Project.Query;
-using RHS.Domain.Resume.ValueObjects;
+﻿using RHS.Webapp.Models.Project.Query;
 
-namespace RHS.Application.CQRS.DTO.Resume.Query;
+namespace RHS.Webapp.Models.Resume.Query;
 
-public record QueryResumeDto 
+public class QueryResumeModel
 {
-    public QueryResumeDto(Guid id, string introduction, string firstName, string lastName, string street, string zipCode, string city, string email, 
-        string gitHubLink, string linkedInLink, byte[] photo, List<QueryProjectDto> projects, DateTime created, DateTime lastModified)
+    public QueryResumeModel(Guid id, string introduction, string firstName, string lastName, string street, string zipCode, string city, string email,
+        string gitHubLink, string linkedInLink, byte[] photo, List<QueryProjectModel> projects, DateTime created, DateTime lastModified)
     {
         Id = id;
-        
+
         Introduction = introduction;
         FirstName = firstName;
         LastName = lastName;
@@ -20,15 +19,13 @@ public record QueryResumeDto
         GitHubLink = gitHubLink;
         LinkedInLink = linkedInLink;
         Photo = photo;
-        
+
         Projects = projects;
-        
+
         Created = created;
         LastModified = lastModified;
     }
 
-    public QueryResumeDto() { }
-    
     public Guid Id { get; set; }
     public string Introduction { get; set; }
     public string FirstName { get; set; }
@@ -40,7 +37,7 @@ public record QueryResumeDto
     public string GitHubLink { get; set; }
     public string LinkedInLink { get; set; }
     public byte[] Photo { get; set; }
-    public List<QueryProjectDto> Projects { get; set; }
+    public List<QueryProjectModel> Projects { get; set; }
     public DateTime Created { get; protected set; }
     public DateTime LastModified { get; protected set; }
 }

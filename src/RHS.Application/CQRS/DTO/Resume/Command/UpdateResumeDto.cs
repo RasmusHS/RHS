@@ -4,7 +4,7 @@ using RHS.Domain.Resume.ValueObjects;
 
 namespace RHS.Application.CQRS.DTO.Resume.Command;
 
-public record UpdateResumeDto : DtoBase
+public record UpdateResumeDto 
 {
     public UpdateResumeDto(Guid id, string introduction, string firstName, string lastName, 
         string street, string zipCode, string city, 
@@ -40,6 +40,8 @@ public record UpdateResumeDto : DtoBase
     public string GitHubLink { get; set; }
     public string LinkedInLink { get; set; }
     public byte[] Photo { get; set; }
+    public DateTime Created { get; protected set; }
+    public DateTime LastModified { get; protected set; }
 
     public class Validator : AbstractValidator<UpdateResumeDto>
     {
