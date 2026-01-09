@@ -5,7 +5,7 @@ namespace RHS.Webapp.Services.ApiClients.Interfaces;
 
 public interface IResumeApiClient
 {
-    Task<CreateResumeModel> CreateResumeAsync(CreateResumeModel model);
+    //Task<CreateResumeModel> CreateResumeAsync(CreateResumeModel model);
     Task<QueryResumeModel> GetResumeAsync(Guid id);
-    Task<UpdateResumeModel> UpdateResumeAsync(UpdateResumeModel model);
+    //Task<UpdateResumeModel> UpdateResumeAsync(UpdateResumeModel model);
 }

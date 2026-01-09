@@ -13,18 +13,18 @@ public class ResumeApiClient : IResumeApiClient
         _httpClient = httpClient;
     }
 
-    public async Task<CreateResumeModel> CreateResumeAsync(CreateResumeModel model)
-    {
-        return await _httpClient.PostAsJsonAsync("/api/resume", model).Result.Content.ReadFromJsonAsync<CreateResumeModel>();
-    }
+    //public async Task<CreateResumeModel> CreateResumeAsync(CreateResumeModel model)
+    //{
+    //    return await _httpClient.PostAsJsonAsync("/api/resume", model).Result.Content.ReadFromJsonAsync<CreateResumeModel>();
+    //}
 
     public async Task<QueryResumeModel> GetResumeAsync(Guid id)
     {
         return await _httpClient.GetFromJsonAsync<QueryResumeModel>($"/api/resume/{id}");
     }
 
-    public async Task<UpdateResumeModel> UpdateResumeAsync(UpdateResumeModel model)
-    {
-        return await _httpClient.PutAsJsonAsync("/api/resume", model).Result.Content.ReadFromJsonAsync<UpdateResumeModel>();
-    }
+    //public async Task<UpdateResumeModel> UpdateResumeAsync(UpdateResumeModel model)
+    //{
+    //    return await _httpClient.PutAsJsonAsync("/api/resume", model).Result.Content.ReadFromJsonAsync<UpdateResumeModel>();
+    //}
 }

@@ -1,5 +1,7 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #101010;
+    color: #f7f7f7;
 }
 
 a, .btn-link {
@@ -17,7 +19,80 @@ a, .btn-link {
 }
 
 .content {
-    padding-top: 1.1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/*@media (min-width: 96rem) {
+    .content {
+        max-width: 96rem;
+    }
+}
+
+@media (min-width: 80rem) {
+    .content {
+        max-width: 80rem;
+    }
+}
+
+@media (min-width: 64rem) {
+    .content {
+        max-width: 64rem;
+    }
+}
+
+@media (min-width: 48rem) {
+    .content {
+        max-width: 48rem;
+    }
+}
+
+@media (min-width: 40rem) {
+    .content {
+        max-width: 40rem;
+    }
+}*/
+
+#about {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 0.5rem;
+    height: 500px;
+}
+
+.grid-item {
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.profilBillede {
+    display: grid;
+    width: auto;
+    border-radius: 50%;
+    max-height: 300px;
+    height: auto;
+    object-fit: cover;
+    transform: scaleX(-1);
+    margin-left: auto;
+    margin-right: auto;
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+}
+
+.about-indhold {
+    grid-column: 2 / 4;
+    grid-row: 1 / 3;
+    align-items: start;
+    justify-content: start;
+}
+
+.social-links {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
 }
 
 h1:focus {
