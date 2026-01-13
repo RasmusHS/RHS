@@ -26,8 +26,8 @@ public class GetAllProjectsQueryHandler : IQueryHandler<GetAllProjectsQuery, Col
         foreach (var project in projectsResult)
         {
             QueryProjectDto dto = new QueryProjectDto(
-                project.Id, 
-                project.ResumeId, 
+                project.Id.Value, 
+                project.ResumeId.Value, 
                 project.ProjectTitle, 
                 project.Description, 
                 project.ProjectUrl, 

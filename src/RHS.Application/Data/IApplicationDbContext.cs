@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using RHS.Domain.Common;
 using RHS.Domain.Resume;
 using RHS.Domain.Resume.Entities;
 

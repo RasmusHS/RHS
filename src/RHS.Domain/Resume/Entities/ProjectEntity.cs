@@ -33,7 +33,7 @@ public sealed class ProjectEntity : Entity<ProjectId>
         return Result.Ok<ProjectEntity>(new ProjectEntity(ProjectId.Create(), resumeId, projectTitle, description, projectUrl, demoGif, isFeatured));
     }
 
-    public void Update(ResumeId resumeId, string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured)
+    public void Update(ResumeId resumeId, string projectTitle, string description, string projectUrl, byte[] demoGif, bool isFeatured) // TODO: Change ResumeId to Guid and turn into it into ResumeId inside the method
     {
         Ensure.That(resumeId, nameof(resumeId)).IsNotNull();
         Ensure.That(projectTitle, nameof(projectTitle)).IsNotNullOrEmpty();

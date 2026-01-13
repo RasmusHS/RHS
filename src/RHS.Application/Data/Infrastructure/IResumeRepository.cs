@@ -1,5 +1,4 @@
 ﻿using RHS.Domain.Resume;
-using RHS.Domain.Resume.Entities;
 
 namespace RHS.Application.Data.Infrastructure;
 
