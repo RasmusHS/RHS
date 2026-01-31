@@ -1,5 +1,5 @@
-Arbejder i øjeblikket i branch: Frontend\
-Endpoint demo link: https://rhsportfolio.azurewebsites.net/api/resume/5ec199f0-4c26-4d20-bbdd-39ac844237b8
+Arbejder i øjeblikket i branch: Frontend
+
 # Portfolio Hjemmeside/Website
 Dette portfolio projekt har 2 formål:
 1. Bruge som en mulighed for at lære nyt: Frontend (React eller Blazor), CI/CD og Azure
